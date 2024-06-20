@@ -143,6 +143,7 @@ class AtomicEnergiesBlock(torch.nn.Module):
     def forward(
         self, x: torch.Tensor  # one-hot of elements [..., n_elements]
     ) -> torch.Tensor:  # [..., ]
+        # import ipdb;ipdb.set_trace()  ???
         return torch.matmul(x, self.atomic_energies)
 
     def __repr__(self):
@@ -223,6 +224,7 @@ class EquivariantProductBasisBlock(torch.nn.Module):
         sc: Optional[torch.Tensor],
         node_attrs: torch.Tensor,
     ) -> torch.Tensor:
+        # import ipdb;ipdb.set_trace()
         node_feats = self.symmetric_contractions(node_feats, node_attrs)
         if self.use_sc and sc is not None:
             return self.linear(node_feats) + sc
@@ -525,7 +527,6 @@ class RealAgnosticInteractionBlock(InteractionBlock):
             shared_weights=False,
             internal_weights=False,
         )
-
         # Convolution weights
         input_dim = self.edge_feats_irreps.num_irreps
         self.conv_tp_weights = nn.FullyConnectedNet(
@@ -539,7 +540,7 @@ class RealAgnosticInteractionBlock(InteractionBlock):
         self.linear = o3.Linear(
             irreps_mid, self.irreps_out, internal_weights=True, shared_weights=True
         )
-
+        # import ipdb;ipdb.set_trace()
         # Selector TensorProduct
         self.skip_tp = o3.FullyConnectedTensorProduct(
             self.irreps_out, self.node_attrs_irreps, self.irreps_out
@@ -554,6 +555,7 @@ class RealAgnosticInteractionBlock(InteractionBlock):
         edge_feats: torch.Tensor,
         edge_index: torch.Tensor,
     ) -> Tuple[torch.Tensor, None]:
+        # import ipdb;ipdb.set_trace()
         sender = edge_index[0]
         receiver = edge_index[1]
         num_nodes = node_feats.shape[0]

@@ -41,7 +41,8 @@ from mace.tools.scripts_utils import (
 )
 from mace.tools.slurm_distributed import DistributedEnvironment
 from mace.tools.utils import AtomicNumberTable
-
+from mace.optimizer.LKF import LKFOptimizer
+# from torchsummary import summary
 
 def main() -> None:
     """
@@ -519,6 +520,9 @@ def run(args: argparse.Namespace) -> None:
         )
     model.to(device)
 
+    for name, parameters in model.named_parameters():
+        print(name, ':', parameters.size())
+
     # Optimizer
     decay_interactions = {}
     no_decay_interactions = {}
@@ -573,14 +577,25 @@ def run(args: argparse.Namespace) -> None:
             ) from exc
         _param_options = {k: v for k, v in param_options.items() if k != "amsgrad"}
         optimizer = adamw_schedulefree.AdamWScheduleFree(**_param_options)
+    elif args.optimizer == "LKF":
+        optimizer = LKFOptimizer(
+            model.parameters(),
+            0.98,
+            0.9987,
+            1024,
+        )
+    
     else:
         optimizer = torch.optim.Adam(**param_options)
 
     logger = tools.MetricsLogger(
         directory=args.results_dir, tag=tag + "_train"
     )  # pylint: disable=E1123
-
-    lr_scheduler = LRScheduler(optimizer, args)
+    
+    if args.optimizer != "LKF":
+        lr_scheduler = LRScheduler(optimizer, args)
+    else:
+        lr_scheduler = None
 
     swa: Optional[tools.SWAContainer] = None
     swas = [False]

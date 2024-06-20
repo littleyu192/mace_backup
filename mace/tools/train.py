@@ -31,7 +31,9 @@ from .utils import (
     compute_rel_rmse,
     compute_rmse,
 )
-
+import math
+from mace.optimizer.LKF import LKFOptimizer
+import torch.distributed as dist
 
 @dataclasses.dataclass
 class SWAContainer:
@@ -157,7 +159,7 @@ def train(
     while epoch < max_num_epochs:
         # LR scheduler and SWA update
         if swa is None or epoch < swa.start:
-            if epoch > start_epoch:
+            if (epoch > start_epoch) and (type(optimizer) != LKFOptimizer):
                 lr_scheduler.step(
                     metrics=valid_loss
                 )  # Can break if exponential LR, TODO fix that!
@@ -289,16 +291,28 @@ def train_one_epoch(
 ) -> None:
     model_to_train = model if distributed_model is None else distributed_model
     for batch in data_loader:
-        _, opt_metrics = take_step(
-            model=model_to_train,
-            loss_fn=loss_fn,
-            batch=batch,
-            optimizer=optimizer,
-            ema=ema,
-            output_args=output_args,
-            max_grad_norm=max_grad_norm,
-            device=device,
-        )
+        if type(optimizer) == LKFOptimizer:
+            _, opt_metrics = take_KF_step(
+                model=model_to_train,
+                loss_fn=loss_fn,
+                batch=batch,
+                optimizer=optimizer,
+                ema=ema,
+                output_args=output_args,
+                max_grad_norm=max_grad_norm,
+                device=device,
+            )
+        else:
+            _, opt_metrics = take_step(
+                model=model_to_train,
+                loss_fn=loss_fn,
+                batch=batch,
+                optimizer=optimizer,
+                ema=ema,
+                output_args=output_args,
+                max_grad_norm=max_grad_norm,
+                device=device,
+            )
         opt_metrics["mode"] = "opt"
         opt_metrics["epoch"] = epoch
         if rank == 0:
@@ -342,6 +356,94 @@ def take_step(
 
     return loss, loss_dict
 
+def take_KF_step(
+    model: torch.nn.Module,
+    loss_fn: torch.nn.Module,
+    batch: torch_geometric.batch.Batch,
+    optimizer: torch.optim.Optimizer,
+    ema: Optional[ExponentialMovingAverage],
+    output_args: Dict[str, bool],
+    max_grad_norm: Optional[float],
+    device: torch.device,
+) -> Tuple[float, Dict[str, Any]]:
+    start_time = time.time()
+    batch = batch.to(device)
+    optimizer.zero_grad(set_to_none=True)
+    batch_dict = batch.to_dict()
+
+    # import ipdb;ipdb.set_trace()
+    # KF-energy
+    output = model(
+        batch_dict,
+        training=True,
+        compute_force=False,
+        compute_virials=False,
+        compute_stress=False,
+    )
+    Etot_label = batch_dict['energy']
+    Etot_predict = output['energy'] 
+    bs = Etot_predict.shape[0]
+    natoms_sum = Etot_predict.shape[0]
+    natoms_sum = natoms_sum / bs
+    optimizer.set_grad_prefactor(natoms_sum)
+    error = Etot_label - Etot_predict
+    error = error / natoms_sum
+    mask = error < 0
+    update_e_prefactor = 1.0
+    error = error * update_e_prefactor
+    error[mask] = -1 * error[mask]
+    error = error.mean()
+
+    if type(model) == DistributedDataParallel:
+        dist.all_reduce(error)
+        error /= dist.get_world_size()
+
+    Etot_predict = update_e_prefactor * Etot_predict
+    Etot_predict[mask] = -1 * Etot_predict[mask]
+    Etot_predict.sum().backward()
+    error = error * math.sqrt(bs)
+    optimizer.step(error)
+
+    # KF-force
+    output = model(
+        batch_dict,
+        training=True,
+        compute_force=True,
+        compute_virials=False,
+        compute_stress=False,
+    )
+    Force_label = batch_dict['forces']
+    Force_predict = output['forces'] 
+    optimizer.set_grad_prefactor(natoms_sum)
+    error = Force_label - Force_predict
+    error = error / natoms_sum
+    mask = error < 0
+    update_f_prefactor = 1.0
+    error = error * update_f_prefactor
+    error[mask] = -1 * error[mask]
+    error = error.mean()
+    Force_predict = update_f_prefactor * Force_predict
+    Force_predict[mask] = -1 * Force_predict[mask]
+    Force_predict.sum().backward()
+    error = error * math.sqrt(bs)
+    optimizer.step(error)
+
+
+    loss = loss_fn(pred=output, ref=batch)
+    # loss.backward()
+    if max_grad_norm is not None:
+        torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=max_grad_norm)
+    # optimizer.step()
+
+    if ema is not None:
+        ema.update()
+
+    loss_dict = {
+        "loss": to_numpy(loss),
+        "time": time.time() - start_time,
+    }
+
+    return loss, loss_dict
 
 def evaluate(
     model: torch.nn.Module,

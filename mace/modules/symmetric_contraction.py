@@ -79,6 +79,7 @@ class SymmetricContraction(CodeGenMixin, torch.nn.Module):
             )
 
     def forward(self, x: torch.Tensor, y: torch.Tensor):
+        # import ipdb;ipdb.set_trace()
         outs = [contraction(x, y) for contraction in self.contractions]
         return torch.cat(outs, dim=-1)
 
@@ -123,6 +124,7 @@ class Contraction(torch.nn.Module):
             num_ell = self.U_tensors(i).size()[-2]
 
             if i == correlation:
+                # import ipdb;ipdb.set_trace()
                 parse_subscript_main = (
                     [ALPHABET[j] for j in range(i + min(irrep_out.lmax, 1) - 1)]
                     + ["ik,ekc,bci,be -> bc"]
@@ -154,6 +156,7 @@ class Contraction(torch.nn.Module):
                 self.weights_max = w
             else:
                 # Generate optimized contractions equations
+                # import ipdb;ipdb.set_trace()
                 parse_subscript_weighting = (
                     [ALPHABET[j] for j in range(i + min(irrep_out.lmax, 1))]
                     + ["k,ekc,be->bc"]
@@ -210,12 +213,14 @@ class Contraction(torch.nn.Module):
             self.weights_max = weights[-1]
 
     def forward(self, x: torch.Tensor, y: torch.Tensor):
+        # import ipdb;ipdb.set_trace()
         out = self.graph_opt_main(
             self.U_tensors(self.correlation),
             self.weights_max,
             x,
             y,
         )
+        # import ipdb;ipdb.set_trace()
         for i, (weight, contract_weights, contract_features) in enumerate(
             zip(self.weights, self.contractions_weighting, self.contractions_features)
         ):
@@ -225,6 +230,7 @@ class Contraction(torch.nn.Module):
                 y,
             )
             c_tensor = c_tensor + out
+            # import ipdb;ipdb.set_trace()
             out = contract_features(c_tensor, x)
 
         return out.view(out.shape[0], -1)

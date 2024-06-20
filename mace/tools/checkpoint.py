@@ -13,6 +13,7 @@ from typing import Dict, List, Optional, Tuple
 import torch
 
 from .torch_tools import TensorDict
+from mace.optimizer.LKF import LKFOptimizer
 
 Checkpoint = Dict[str, TensorDict]
 
@@ -27,10 +28,11 @@ class CheckpointState:
 class CheckpointBuilder:
     @staticmethod
     def create_checkpoint(state: CheckpointState) -> Checkpoint:
+        is_kf = (type(state.optimizer) == LKFOptimizer)
         return {
             "model": state.model.state_dict(),
             "optimizer": state.optimizer.state_dict(),
-            "lr_scheduler": state.lr_scheduler.state_dict(),
+            "lr_scheduler": state.lr_scheduler.state_dict() if not is_kf else None,
         }
 
     @staticmethod
@@ -39,7 +41,8 @@ class CheckpointBuilder:
     ) -> None:
         state.model.load_state_dict(checkpoint["model"], strict=strict)  # type: ignore
         state.optimizer.load_state_dict(checkpoint["optimizer"])
-        state.lr_scheduler.load_state_dict(checkpoint["lr_scheduler"])
+        if type(state.optimizer) != LKFOptimizer:
+            state.lr_scheduler.load_state_dict(checkpoint["lr_scheduler"]) 
 
 
 @dataclasses.dataclass

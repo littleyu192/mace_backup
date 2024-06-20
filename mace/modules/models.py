@@ -331,6 +331,7 @@ class ScaleShiftMACE(MACE):
             )
 
         # Atomic energies
+        # import ipdb;ipdb.set_trace()
         node_e0 = self.atomic_energies_fn(data["node_attrs"])
         e0 = scatter_sum(
             src=node_e0, index=data["batch"], dim=-1, dim_size=num_graphs
@@ -384,7 +385,6 @@ class ScaleShiftMACE(MACE):
         inter_e = scatter_sum(
             src=node_inter_es, index=data["batch"], dim=-1, dim_size=num_graphs
         )  # [n_graphs,]
-
         # Add E_0 and (scaled) interaction energy
         total_energy = e0 + inter_e
         node_energy = node_e0 + node_inter_es
