@@ -30,3 +30,7 @@ dist/
 /wandb
 /checkpoints
 *.model
+
+*.pt
+*.model
+*.out

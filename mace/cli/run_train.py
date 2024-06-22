@@ -734,6 +734,7 @@ def run(args: argparse.Namespace) -> None:
         log_errors=args.error_table,
         log_wandb=args.wandb,
         distributed=args.distributed,
+        profiling=args.profiling,
         distributed_model=distributed_model,
         train_sampler=train_sampler,
         rank=rank,

@@ -34,6 +34,7 @@ from .utils import (
 import math
 from mace.optimizer.LKF import LKFOptimizer
 import torch.distributed as dist
+from torch.profiler import profile, record_function, ProfilerActivity
 
 @dataclasses.dataclass
 class SWAContainer:
@@ -126,6 +127,7 @@ def train(
     max_grad_norm: Optional[float] = 10.0,
     log_wandb: bool = False,
     distributed: bool = False,
+    profiling: bool = False,
     save_all_checkpoints: bool = False,
     distributed_model: Optional[DistributedDataParallel] = None,
     train_sampler: Optional[DistributedSampler] = None,
@@ -179,20 +181,47 @@ def train(
             train_sampler.set_epoch(epoch)
         if "ScheduleFree" in type(optimizer).__name__:
             optimizer.train()
-        train_one_epoch(
-            model=model,
-            loss_fn=loss_fn,
-            data_loader=train_loader,
-            optimizer=optimizer,
-            epoch=epoch,
-            output_args=output_args,
-            max_grad_norm=max_grad_norm,
-            ema=ema,
-            logger=logger,
-            device=device,
-            distributed_model=distributed_model,
-            rank=rank,
-        )
+
+        if profiling:
+            print("=" * 60, "Start profiling model training", "=" * 60)
+            with profile(
+                activities=[ProfilerActivity.CUDA, ProfilerActivity.CPU],
+                record_shapes=True,
+            ) as prof:
+                with record_function("model training"):
+                    train_one_epoch(
+                        model=model,
+                        loss_fn=loss_fn,
+                        data_loader=train_loader,
+                        optimizer=optimizer,
+                        epoch=epoch,
+                        output_args=output_args,
+                        max_grad_norm=max_grad_norm,
+                        ema=ema,
+                        logger=logger,
+                        device=device,
+                        distributed_model=distributed_model,
+                        rank=rank,
+                    )
+            print(prof.key_averages().table(sort_by="cuda_time_total"))
+            print("=" * 60, "Profiling MACE model training end", "=" * 60)
+            prof.export_chrome_trace("prof_model_training.json")
+        else:
+            train_one_epoch(
+                model=model,
+                loss_fn=loss_fn,
+                data_loader=train_loader,
+                optimizer=optimizer,
+                epoch=epoch,
+                output_args=output_args,
+                max_grad_norm=max_grad_norm,
+                ema=ema,
+                logger=logger,
+                device=device,
+                distributed_model=distributed_model,
+                rank=rank,
+            )
+        
         if distributed:
             torch.distributed.barrier()
 
