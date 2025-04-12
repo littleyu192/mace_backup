@@ -1,0 +1,283 @@
+2024-12-04 01:07:39.609 INFO: MACE version: 0.3.5
+2024-12-04 01:07:39.610 INFO: Configuration: Namespace(config=None, name='Ti', seed=123, log_dir='logs', model_dir='.', checkpoints_dir='checkpoints', results_dir='results', downloads_dir='downloads', device='cuda', default_dtype='float64', distributed=False, log_level='INFO', error_table='TotalRMSE', model='ScaleShiftMACE', r_max=6.0, radial_type='bessel', num_radial_basis=10, num_cutoff_basis=5, pair_repulsion=False, distance_transform='None', interaction='RealAgnosticResidualInteractionBlock', interaction_first='RealAgnosticResidualInteractionBlock', max_ell=3, correlation=3, num_interactions=2, MLP_irreps='16x0e', radial_MLP='[64, 64, 64]', hidden_irreps='128x0e + 128x1o', num_channels=128, max_L=2, gate='silu', scaling='rms_forces_scaling', avg_num_neighbors=1, compute_avg_num_neighbors=True, compute_stress=False, compute_forces=True, train_file='./dataset/train.xyz', valid_file='./dataset/valid.xyz', valid_fraction=0.1, test_file=None, test_dir=None, multi_processed_test=False, num_workers=0, pin_memory=True, atomic_numbers=None, mean=None, std=None, statistics_file=None, E0s='average', keep_isolated_atoms=False, energy_key='energy', forces_key='forces', virials_key='virials', stress_key='stress', dipole_key='dipole', charges_key='charges', loss='ef', forces_weight=1000.0, swa_forces_weight=100.0, energy_weight=1.0, swa_energy_weight=1000.0, virials_weight=1.0, swa_virials_weight=10.0, stress_weight=1.0, swa_stress_weight=10.0, dipole_weight=1.0, swa_dipole_weight=1.0, config_type_weights='{"Default":1.0}', huber_delta=0.01, optimizer='adam', beta=0.9, batch_size=5, valid_batch_size=5, lr=0.005, swa_lr=0.001, weight_decay=1e-08, amsgrad=True, scheduler='ReduceLROnPlateau', lr_factor=0.8, scheduler_patience=5, lr_scheduler_gamma=0.9993, swa=False, start_swa=None, ema=True, ema_decay=0.995, max_num_epochs=200, patience=2048, foundation_model='/home/l6eub2ic/whcs-share31/wangchen/mace/MPtrj/2024-01-07-mace-128-L2_epoch-199.model', foundation_model_readout=True, eval_interval=2, keep_checkpoints=False, save_all_checkpoints=False, restart_latest=False, save_cpu=True, clip_grad=100.0, wandb=False, wandb_dir=None, wandb_project='', wandb_entity='', wandb_name='', wandb_log_hypers=['num_channels', 'max_L', 'correlation', 'lr', 'swa_lr', 'weight_decay', 'batch_size', 'max_num_epochs', 'start_swa', 'energy_weight', 'forces_weight'])
+2024-12-04 01:07:39.754 INFO: CUDA version: 11.8, CUDA device: 0
+2024-12-04 01:07:40.317 INFO: Error accessing Git repository: /home/l6eub2ic/whcs-share31/wangchen/mace/inorganic/Ti/LoRA
+2024-12-04 01:07:41.853 INFO: Using foundation model /home/l6eub2ic/whcs-share31/wangchen/mace/MPtrj/2024-01-07-mace-128-L2_epoch-199.model as initial checkpoint.
+2024-12-04 01:07:47.293 INFO: Since ASE version 3.23.0b1, using energy_key 'energy' is no longer safe when communicating between MACE and ASE. We recommend using a different key, rewriting energies to 'REF_energy'. You need to use --energy_key='REF_energy', to tell the key name chosen.
+2024-12-04 01:07:49.060 INFO: Since ASE version 3.23.0b1, using forces_key 'forces' is no longer safe when communicating between MACE and ASE. We recommend using a different key, rewriting energies to 'REF_forces'. You need to use --forces_key='REF_forces', to tell the key name chosen.
+2024-12-04 01:07:50.865 INFO: Since ASE version 3.23.0b1, using stress_key 'stress' is no longer safe when communicating between MACE and ASE. We recommend using a different key, rewriting energies to 'REF_stress'. You need to use --stress_key='REF_stress', to tell the key name chosen.
+2024-12-04 01:07:51.279 INFO: Loaded 10054 training configurations from './dataset/train.xyz'
+2024-12-04 01:07:51.477 INFO: Since ASE version 3.23.0b1, using energy_key 'energy' is no longer safe when communicating between MACE and ASE. We recommend using a different key, rewriting energies to 'REF_energy'. You need to use --energy_key='REF_energy', to tell the key name chosen.
+2024-12-04 01:07:51.561 INFO: Since ASE version 3.23.0b1, using forces_key 'forces' is no longer safe when communicating between MACE and ASE. We recommend using a different key, rewriting energies to 'REF_forces'. You need to use --forces_key='REF_forces', to tell the key name chosen.
+2024-12-04 01:07:51.654 INFO: Since ASE version 3.23.0b1, using stress_key 'stress' is no longer safe when communicating between MACE and ASE. We recommend using a different key, rewriting energies to 'REF_stress'. You need to use --stress_key='REF_stress', to tell the key name chosen.
+2024-12-04 01:07:51.670 INFO: Loaded 474 validation configurations from './dataset/valid.xyz'
+2024-12-04 01:07:51.670 INFO: Total number of configurations: train=10054, valid=474, tests=[]
+2024-12-04 01:07:51.717 INFO: AtomicNumberTable: (22,)
+2024-12-04 01:07:51.718 INFO: Atomic Energies not in training file, using command line argument E0s
+2024-12-04 01:07:51.718 INFO: Computing average Atomic Energies using least squares regression
+2024-12-04 01:07:51.752 INFO: Atomic energies: [-7.470202190152845]
+2024-12-04 01:08:02.713 INFO: EnergyForcesLoss(energy_weight=1.000, forces_weight=1000.000)
+2024-12-04 01:08:07.793 INFO: Average number of neighbors: 50.40547177126724
+2024-12-04 01:08:07.793 INFO: Selected the following outputs: {'energy': True, 'forces': True, 'virials': False, 'stress': False, 'dipoles': False}
+2024-12-04 01:08:12.733 INFO: Building model
+2024-12-04 01:08:28.023 INFO: Number of trainable parameters: 176666
+2024-12-04 01:08:28.026 INFO: ScaleShiftMACE(
+  (node_embedding): LinearNodeEmbeddingBlock(
+    (linear): Linear(1x0e -> 128x0e | 128 weights) | 2064 LoRA_weights)
+  )
+  (radial_embedding): RadialEmbeddingBlock(
+    (bessel_fn): BesselBasis(r_max=6.0, num_basis=10, trainable=True)
+    (cutoff_fn): PolynomialCutoff(p=5.0, r_max=6.0)
+  )
+  (spherical_harmonics): SphericalHarmonics()
+  (atomic_energies_fn): AtomicEnergiesBlock(energies=[-7.4702])
+  (interactions): ModuleList(
+    (0): RealAgnosticResidualInteractionBlock(
+      (linear_up): Linear(128x0e -> 128x0e | 16384 weights) | 4096 LoRA_weights)
+      (conv_tp): TensorProduct(128x0e x 1x0e+1x1o+1x2e+1x3o -> 128x0e+128x1o+128x2e+128x3o | 512 paths | 512 weights | 0 LoRA_weights)
+      (conv_tp_weights): FullyConnectedNet[10, 64, 64, 64, 512]
+      (linear): Linear(128x0e+128x1o+128x2e+128x3o -> 128x0e+128x1o+128x2e+128x3o | 65536 weights) | 16384 LoRA_weights)
+      (skip_tp): FullyConnectedTensorProduct(128x0e x 1x0e -> 128x0e+128x1o+128x2e | 16384 paths | 16384 weights | 4096 LoRA_weights)
+      (reshape): reshape_irreps()
+    )
+    (1): RealAgnosticResidualInteractionBlock(
+      (linear_up): Linear(128x0e+128x1o+128x2e -> 128x0e+128x1o+128x2e | 49152 weights) | 12288 LoRA_weights)
+      (conv_tp): TensorProduct(128x0e+128x1o+128x2e x 1x0e+1x1o+1x2e+1x3o -> 384x0e+640x1o+640x2e+512x3o | 2176 paths | 2176 weights | 0 LoRA_weights)
+      (conv_tp_weights): FullyConnectedNet[10, 64, 64, 64, 2176]
+      (linear): Linear(384x0e+640x1o+640x2e+512x3o -> 128x0e+128x1o+128x2e+128x3o | 278528 weights) | 43008 LoRA_weights)
+      (skip_tp): FullyConnectedTensorProduct(128x0e+128x1o+128x2e x 1x0e -> 128x0e | 16384 paths | 16384 weights | 4096 LoRA_weights)
+      (reshape): reshape_irreps()
+    )
+  )
+  (products): ModuleList(
+    (0): EquivariantProductBasisBlock(
+      (symmetric_contractions): SymmetricContraction(
+        (contractions): ModuleList(
+          (0): Contraction(
+            (contractions_weighting): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (contractions_features): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (weights): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 1x4x128 (GPU 0)]
+                (1): Parameter containing: [torch.float64 of size 1x1x128 (GPU 0)]
+            )
+            (graph_opt_main): GraphModule()
+            (LoRA_weight): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 1x23x16 (GPU 0)]
+                (1): Parameter containing: [torch.float64 of size 16x128 (GPU 0)]
+            )
+          )
+          (1): Contraction(
+            (contractions_weighting): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (contractions_features): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (weights): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 1x6x128 (GPU 0)]
+                (1): Parameter containing: [torch.float64 of size 1x1x128 (GPU 0)]
+            )
+            (graph_opt_main): GraphModule()
+            (LoRA_weight): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 1x51x16 (GPU 0)]
+                (1): Parameter containing: [torch.float64 of size 16x128 (GPU 0)]
+            )
+          )
+          (2): Contraction(
+            (contractions_weighting): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (contractions_features): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (weights): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 1x7x128 (GPU 0)]
+                (1): Parameter containing: [torch.float64 of size 1x1x128 (GPU 0)]
+            )
+            (graph_opt_main): GraphModule()
+            (LoRA_weight): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 1x65x16 (GPU 0)]
+                (1): Parameter containing: [torch.float64 of size 16x128 (GPU 0)]
+            )
+          )
+        )
+      )
+      (linear): Linear(128x0e+128x1o+128x2e -> 128x0e+128x1o+128x2e | 49152 weights) | 12288 LoRA_weights)
+    )
+    (1): EquivariantProductBasisBlock(
+      (symmetric_contractions): SymmetricContraction(
+        (contractions): ModuleList(
+          (0): Contraction(
+            (contractions_weighting): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (contractions_features): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (weights): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 1x4x128 (GPU 0)]
+                (1): Parameter containing: [torch.float64 of size 1x1x128 (GPU 0)]
+            )
+            (graph_opt_main): GraphModule()
+            (LoRA_weight): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 1x23x16 (GPU 0)]
+                (1): Parameter containing: [torch.float64 of size 16x128 (GPU 0)]
+            )
+          )
+        )
+      )
+      (linear): Linear(128x0e -> 128x0e | 16384 weights) | 4096 LoRA_weights)
+    )
+  )
+  (readouts): ModuleList(
+    (0): LinearReadoutBlock(
+      (linear): Linear(128x0e+128x1o+128x2e -> 1x0e | 128 weights) | 2064 LoRA_weights)
+    )
+    (1): NonLinearReadoutBlock(
+      (linear_1): Linear(128x0e -> 16x0e | 2048 weights) | 2304 LoRA_weights)
+      (non_linearity): Activation [x] (16x0e -> 16x0e)
+      (linear_2): Linear(16x0e -> 1x0e | 16 weights) | 272 LoRA_weights)
+    )
+  )
+  (scale_shift): ScaleShiftBlock(scale=0.804154, shift=0.164097)
+)
+2024-12-04 01:08:28.030 INFO: Number of parameters: 897322
+2024-12-04 01:08:28.030 INFO: Optimizer: Adam (
+Parameter Group 0
+    amsgrad: True
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.005
+    maximize: False
+    name: embedding
+    weight_decay: 0.0
+
+Parameter Group 1
+    amsgrad: True
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.005
+    maximize: False
+    name: interactions_decay
+    weight_decay: 1e-08
+
+Parameter Group 2
+    amsgrad: True
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.005
+    maximize: False
+    name: interactions_no_decay
+    weight_decay: 0.0
+
+Parameter Group 3
+    amsgrad: True
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.005
+    maximize: False
+    name: products
+    weight_decay: 1e-08
+
+Parameter Group 4
+    amsgrad: True
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.005
+    maximize: False
+    name: readouts
+    weight_decay: 0.0
+)
+2024-12-04 01:08:28.030 INFO: Using gradient clipping with tolerance=100.000
+2024-12-04 01:08:28.030 INFO: Started training
+2024-12-04 01:08:44.029 INFO: Epoch None: loss=3403.7790, RMSE_E=57475.6 meV, RMSE_F=302.1 meV / A
+2024-12-04 01:13:54.048 INFO: Epoch 0: loss=10.5467, RMSE_E=293.6 meV, RMSE_F=101.5 meV / A
+2024-12-04 01:23:47.175 INFO: Epoch 2: loss=7.5554, RMSE_E=165.2 meV, RMSE_F=86.0 meV / A
+2024-12-04 01:33:39.618 INFO: Epoch 4: loss=6.7254, RMSE_E=135.2 meV, RMSE_F=81.1 meV / A
+2024-12-04 01:43:30.828 INFO: Epoch 6: loss=6.2763, RMSE_E=120.1 meV, RMSE_F=78.5 meV / A
+2024-12-04 01:53:23.284 INFO: Epoch 8: loss=6.0202, RMSE_E=121.2 meV, RMSE_F=76.8 meV / A
+2024-12-04 02:03:21.439 INFO: Epoch 10: loss=6.0243, RMSE_E=109.1 meV, RMSE_F=77.0 meV / A
+2024-12-04 02:13:11.716 INFO: Epoch 12: loss=5.8377, RMSE_E=97.8 meV, RMSE_F=75.6 meV / A
+2024-12-04 02:23:04.918 INFO: Epoch 14: loss=5.8491, RMSE_E=96.6 meV, RMSE_F=75.6 meV / A
+2024-12-04 02:32:42.535 INFO: Epoch 16: loss=5.7128, RMSE_E=92.9 meV, RMSE_F=74.6 meV / A
+2024-12-04 02:42:32.435 INFO: Epoch 18: loss=5.6827, RMSE_E=92.5 meV, RMSE_F=74.5 meV / A
+2024-12-04 02:52:22.756 INFO: Epoch 20: loss=5.6593, RMSE_E=90.2 meV, RMSE_F=74.3 meV / A
+2024-12-04 03:02:12.425 INFO: Epoch 22: loss=5.5517, RMSE_E=85.1 meV, RMSE_F=73.7 meV / A
+2024-12-04 03:11:59.594 INFO: Epoch 24: loss=5.6017, RMSE_E=89.3 meV, RMSE_F=73.9 meV / A
+2024-12-04 03:21:43.495 INFO: Epoch 26: loss=5.6166, RMSE_E=93.7 meV, RMSE_F=73.9 meV / A
+2024-12-04 03:31:30.659 INFO: Epoch 28: loss=5.7049, RMSE_E=92.3 meV, RMSE_F=74.6 meV / A
+2024-12-04 03:41:16.846 INFO: Epoch 30: loss=5.5265, RMSE_E=77.6 meV, RMSE_F=73.7 meV / A
+2024-12-04 03:51:11.908 INFO: Epoch 32: loss=5.5998, RMSE_E=79.4 meV, RMSE_F=73.9 meV / A
+2024-12-04 04:01:01.217 INFO: Epoch 34: loss=5.6827, RMSE_E=78.5 meV, RMSE_F=74.4 meV / A
+2024-12-04 04:10:47.361 INFO: Epoch 36: loss=5.5102, RMSE_E=86.6 meV, RMSE_F=73.3 meV / A
+2024-12-04 04:20:37.540 INFO: Epoch 38: loss=5.6130, RMSE_E=80.3 meV, RMSE_F=74.0 meV / A
+2024-12-04 04:30:26.062 INFO: Epoch 40: loss=5.6203, RMSE_E=72.4 meV, RMSE_F=74.3 meV / A
+2024-12-04 04:40:14.315 INFO: Epoch 42: loss=5.6681, RMSE_E=75.2 meV, RMSE_F=74.4 meV / A
+2024-12-04 04:50:04.242 INFO: Epoch 44: loss=5.6089, RMSE_E=72.2 meV, RMSE_F=74.0 meV / A
+2024-12-04 04:59:53.519 INFO: Epoch 46: loss=5.6502, RMSE_E=70.1 meV, RMSE_F=74.4 meV / A
+2024-12-04 05:09:43.752 INFO: Epoch 48: loss=5.7088, RMSE_E=69.4 meV, RMSE_F=74.7 meV / A
+2024-12-04 05:19:33.767 INFO: Epoch 50: loss=5.7105, RMSE_E=66.8 meV, RMSE_F=74.8 meV / A
+2024-12-04 05:29:10.299 INFO: Epoch 52: loss=5.7800, RMSE_E=69.8 meV, RMSE_F=75.1 meV / A
+2024-12-04 05:38:50.766 INFO: Epoch 54: loss=5.7946, RMSE_E=67.6 meV, RMSE_F=75.3 meV / A
+2024-12-04 05:48:45.135 INFO: Epoch 56: loss=5.8654, RMSE_E=65.8 meV, RMSE_F=75.7 meV / A
+2024-12-04 05:58:36.914 INFO: Epoch 58: loss=5.8806, RMSE_E=65.9 meV, RMSE_F=75.8 meV / A
+2024-12-04 06:08:18.297 INFO: Epoch 60: loss=5.9367, RMSE_E=65.8 meV, RMSE_F=76.2 meV / A
+2024-12-04 06:18:06.312 INFO: Epoch 62: loss=6.0601, RMSE_E=64.2 meV, RMSE_F=76.9 meV / A
+2024-12-04 06:27:54.769 INFO: Epoch 64: loss=6.0588, RMSE_E=65.4 meV, RMSE_F=76.9 meV / A
+2024-12-04 06:37:41.970 INFO: Epoch 66: loss=6.0830, RMSE_E=64.6 meV, RMSE_F=76.9 meV / A
+2024-12-04 06:47:27.455 INFO: Epoch 68: loss=6.1477, RMSE_E=62.5 meV, RMSE_F=77.4 meV / A
+2024-12-04 06:57:15.196 INFO: Epoch 70: loss=6.1651, RMSE_E=64.4 meV, RMSE_F=77.5 meV / A
+2024-12-04 07:07:01.840 INFO: Epoch 72: loss=6.2023, RMSE_E=64.8 meV, RMSE_F=77.7 meV / A
+2024-12-04 07:16:52.303 INFO: Epoch 74: loss=6.2599, RMSE_E=61.7 meV, RMSE_F=77.9 meV / A
+2024-12-04 07:26:43.491 INFO: Epoch 76: loss=6.3253, RMSE_E=61.8 meV, RMSE_F=78.3 meV / A
+2024-12-04 07:36:34.243 INFO: Epoch 78: loss=6.2976, RMSE_E=62.4 meV, RMSE_F=78.2 meV / A
+2024-12-04 07:46:20.145 INFO: Epoch 80: loss=6.3574, RMSE_E=61.9 meV, RMSE_F=78.6 meV / A
+2024-12-04 07:56:04.942 INFO: Epoch 82: loss=6.3732, RMSE_E=62.2 meV, RMSE_F=78.6 meV / A
+2024-12-04 08:05:53.492 INFO: Epoch 84: loss=6.3937, RMSE_E=62.9 meV, RMSE_F=78.8 meV / A
+2024-12-04 08:15:28.126 INFO: Epoch 86: loss=6.4373, RMSE_E=62.4 meV, RMSE_F=79.1 meV / A
+2024-12-04 08:25:13.655 INFO: Epoch 88: loss=6.4943, RMSE_E=62.0 meV, RMSE_F=79.4 meV / A
+2024-12-04 08:35:00.019 INFO: Epoch 90: loss=6.4898, RMSE_E=62.1 meV, RMSE_F=79.3 meV / A
+2024-12-04 08:44:48.075 INFO: Epoch 92: loss=6.5364, RMSE_E=61.9 meV, RMSE_F=79.6 meV / A
+2024-12-04 08:54:35.307 INFO: Epoch 94: loss=6.5542, RMSE_E=61.6 meV, RMSE_F=79.7 meV / A
+2024-12-04 09:04:22.505 INFO: Epoch 96: loss=6.5770, RMSE_E=62.1 meV, RMSE_F=79.8 meV / A
+2024-12-04 09:14:02.200 INFO: Epoch 98: loss=6.5914, RMSE_E=62.0 meV, RMSE_F=80.0 meV / A
+2024-12-04 17:26:41.438 INFO: Training complete
+2024-12-04 17:26:41.439 INFO: Computing metrics for training, validation, and test sets
+2024-12-04 17:26:41.443 INFO: Loading checkpoint: checkpoints/Ti_run-123_epoch-36.pt
+2024-12-04 17:26:43.401 INFO: Loaded model from epoch 36
+2024-12-04 17:26:43.402 INFO: Evaluating train ...
+2024-12-04 17:30:49.911 INFO: Evaluating valid ...
+2024-12-04 17:30:55.932 INFO: 
++-------------+--------------+------------------+-------------------+
+| config_type | RMSE E / meV | RMSE F / meV / A | relative F RMSE % |
++-------------+--------------+------------------+-------------------+
+|    train    |     88.6     |       62.4       |        7.49       |
+|    valid    |     86.6     |       73.3       |        9.36       |
++-------------+--------------+------------------+-------------------+
+2024-12-04 17:30:55.932 INFO: Saving model to checkpoints/Ti_run-123.model
+2024-12-04 17:30:59.940 INFO: Compiling model, saving metadata to Ti_compiled.model
+2024-12-04 17:31:01.613 INFO: Done

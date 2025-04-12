@@ -1,0 +1,968 @@
+2025-01-16 23:11:57.200 INFO: MACE version: 0.3.5
+2025-01-16 23:11:57.207 INFO: Configuration: Namespace(config=None, name='3BPA-L2', seed=123, log_dir='logs', model_dir='.', checkpoints_dir='checkpoints', results_dir='results', downloads_dir='downloads', device='cuda', default_dtype='float64', distributed=False, log_level='INFO', error_table='TotalRMSE', model='ScaleShiftMACE', r_max=5.0, radial_type='bessel', num_radial_basis=8, num_cutoff_basis=5, pair_repulsion=False, distance_transform='None', interaction='RealAgnosticResidualInteractionBlock', interaction_first='RealAgnosticResidualInteractionBlock', max_ell=3, correlation=3, num_interactions=2, MLP_irreps='16x0e', radial_MLP='[64, 64, 64]', hidden_irreps='128x0e + 128x1o', num_channels=256, max_L=2, gate='silu', scaling='rms_forces_scaling', avg_num_neighbors=1, compute_avg_num_neighbors=True, compute_stress=False, compute_forces=True, train_file='./dataset/train_300K.xyz', valid_file=None, valid_fraction=0.1, test_file='./dataset/test_300K.xyz', test_dir=None, multi_processed_test=False, num_workers=0, pin_memory=True, atomic_numbers=None, mean=None, std=None, statistics_file=None, E0s='{1:-13.587222780835477, 6:-1029.4889999855063, 7:-1484.9814568572233, 8:-2041.9816003861047}', keep_isolated_atoms=False, energy_key='energy', forces_key='forces', virials_key='virials', stress_key='stress', dipole_key='dipole', charges_key='charges', loss='ef', forces_weight=1000.0, swa_forces_weight=100.0, energy_weight=1.0, swa_energy_weight=1000.0, virials_weight=1.0, swa_virials_weight=10.0, stress_weight=1.0, swa_stress_weight=10.0, dipole_weight=1.0, swa_dipole_weight=1.0, config_type_weights='{"Default":1.0}', huber_delta=0.01, optimizer='adam', beta=0.9, batch_size=5, valid_batch_size=5, lr=0.01, swa_lr=0.001, weight_decay=5e-07, amsgrad=True, scheduler='ReduceLROnPlateau', lr_factor=0.8, scheduler_patience=50, lr_scheduler_gamma=0.9993, swa=False, start_swa=None, ema=True, ema_decay=0.99, max_num_epochs=1500, patience=2048, foundation_model=None, foundation_model_readout=True, eval_interval=2, keep_checkpoints=False, save_all_checkpoints=False, restart_latest=False, save_cpu=False, clip_grad=10.0, wandb=False, wandb_dir=None, wandb_project='', wandb_entity='', wandb_name='', wandb_log_hypers=['num_channels', 'max_L', 'correlation', 'lr', 'swa_lr', 'weight_decay', 'batch_size', 'max_num_epochs', 'start_swa', 'energy_weight', 'forces_weight'])
+2025-01-16 23:11:57.331 INFO: CUDA version: 12.1, CUDA device: 0
+2025-01-16 23:11:57.636 INFO: Error accessing Git repository: /home/bingxing2/home/scx9kv2/work/organic/3BPA/baseline_123
+2025-01-16 23:11:57.950 INFO: Since ASE version 3.23.0b1, using energy_key 'energy' is no longer safe when communicating between MACE and ASE. We recommend using a different key, rewriting energies to 'REF_energy'. You need to use --energy_key='REF_energy', to tell the key name chosen.
+2025-01-16 23:11:58.050 INFO: Since ASE version 3.23.0b1, using forces_key 'forces' is no longer safe when communicating between MACE and ASE. We recommend using a different key, rewriting energies to 'REF_forces'. You need to use --forces_key='REF_forces', to tell the key name chosen.
+2025-01-16 23:11:58.151 INFO: Since ASE version 3.23.0b1, using stress_key 'stress' is no longer safe when communicating between MACE and ASE. We recommend using a different key, rewriting energies to 'REF_stress'. You need to use --stress_key='REF_stress', to tell the key name chosen.
+2025-01-16 23:11:58.166 INFO: Loaded 500 training configurations from './dataset/train_300K.xyz'
+2025-01-16 23:11:58.167 INFO: Using random 10.0% of training set for validation
+2025-01-16 23:11:59.178 INFO: Since ASE version 3.23.0b1, using energy_key 'energy' is no longer safe when communicating between MACE and ASE. We recommend using a different key, rewriting energies to 'REF_energy'. You need to use --energy_key='REF_energy', to tell the key name chosen.
+2025-01-16 23:11:59.508 INFO: Since ASE version 3.23.0b1, using forces_key 'forces' is no longer safe when communicating between MACE and ASE. We recommend using a different key, rewriting energies to 'REF_forces'. You need to use --forces_key='REF_forces', to tell the key name chosen.
+2025-01-16 23:11:59.845 INFO: Since ASE version 3.23.0b1, using stress_key 'stress' is no longer safe when communicating between MACE and ASE. We recommend using a different key, rewriting energies to 'REF_stress'. You need to use --stress_key='REF_stress', to tell the key name chosen.
+2025-01-16 23:11:59.896 INFO: Loaded 1669 test configurations from './dataset/test_300K.xyz'
+2025-01-16 23:11:59.896 INFO: Total number of configurations: train=450, valid=50, tests=[Default: 1669]
+2025-01-16 23:11:59.900 INFO: AtomicNumberTable: (1, 6, 7, 8)
+2025-01-16 23:11:59.900 INFO: Atomic Energies not in training file, using command line argument E0s
+2025-01-16 23:11:59.900 INFO: Atomic energies: [-13.587222780835477, -1029.4889999855063, -1484.9814568572233, -2041.9816003861047]
+2025-01-16 23:12:00.193 INFO: EnergyForcesLoss(energy_weight=1.000, forces_weight=1000.000)
+2025-01-16 23:12:00.584 INFO: Average number of neighbors: 16.714567901234567
+2025-01-16 23:12:00.585 INFO: Selected the following outputs: {'energy': True, 'forces': True, 'virials': False, 'stress': False, 'dipoles': False}
+2025-01-16 23:12:00.789 INFO: Building model
+2025-01-16 23:12:00.797 INFO: Hidden irreps: 256x0e+256x1o+256x2e
+2025-01-16 23:12:04.043 INFO: ScaleShiftMACE(
+  (node_embedding): LinearNodeEmbeddingBlock(
+    (linear): Linear(4x0e -> 256x0e | 1024 weights)
+  )
+  (radial_embedding): RadialEmbeddingBlock(
+    (bessel_fn): BesselBasis(r_max=5.0, num_basis=8, trainable=False)
+    (cutoff_fn): PolynomialCutoff(p=5.0, r_max=5.0)
+  )
+  (spherical_harmonics): SphericalHarmonics()
+  (atomic_energies_fn): AtomicEnergiesBlock(energies=[-13.5872, -1029.4890, -1484.9815, -2041.9816])
+  (interactions): ModuleList(
+    (0): RealAgnosticResidualInteractionBlock(
+      (linear_up): Linear(256x0e -> 256x0e | 65536 weights)
+      (conv_tp): TensorProduct(256x0e x 1x0e+1x1o+1x2e+1x3o -> 256x0e+256x1o+256x2e+256x3o | 1024 paths | 1024 weights)
+      (conv_tp_weights): FullyConnectedNet[8, 64, 64, 64, 1024]
+      (linear): Linear(256x0e+256x1o+256x2e+256x3o -> 256x0e+256x1o+256x2e+256x3o | 262144 weights)
+      (skip_tp): FullyConnectedTensorProduct(256x0e x 4x0e -> 256x0e+256x1o+256x2e | 262144 paths | 262144 weights)
+      (reshape): reshape_irreps()
+    )
+    (1): RealAgnosticResidualInteractionBlock(
+      (linear_up): Linear(256x0e+256x1o+256x2e -> 256x0e+256x1o+256x2e | 196608 weights)
+      (conv_tp): TensorProduct(256x0e+256x1o+256x2e x 1x0e+1x1o+1x2e+1x3o -> 768x0e+1280x1o+1280x2e+1024x3o | 4352 paths | 4352 weights)
+      (conv_tp_weights): FullyConnectedNet[8, 64, 64, 64, 4352]
+      (linear): Linear(768x0e+1280x1o+1280x2e+1024x3o -> 256x0e+256x1o+256x2e+256x3o | 1114112 weights)
+      (skip_tp): FullyConnectedTensorProduct(256x0e+256x1o+256x2e x 4x0e -> 256x0e | 262144 paths | 262144 weights)
+      (reshape): reshape_irreps()
+    )
+  )
+  (products): ModuleList(
+    (0): EquivariantProductBasisBlock(
+      (symmetric_contractions): SymmetricContraction(
+        (contractions): ModuleList(
+          (0): Contraction(
+            (contractions_weighting): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (contractions_features): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (weights): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 4x4x256 (cuda:0)]
+                (1): Parameter containing: [torch.float64 of size 4x1x256 (cuda:0)]
+            )
+            (graph_opt_main): GraphModule()
+          )
+          (1): Contraction(
+            (contractions_weighting): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (contractions_features): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (weights): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 4x6x256 (cuda:0)]
+                (1): Parameter containing: [torch.float64 of size 4x1x256 (cuda:0)]
+            )
+            (graph_opt_main): GraphModule()
+          )
+          (2): Contraction(
+            (contractions_weighting): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (contractions_features): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (weights): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 4x7x256 (cuda:0)]
+                (1): Parameter containing: [torch.float64 of size 4x1x256 (cuda:0)]
+            )
+            (graph_opt_main): GraphModule()
+          )
+        )
+      )
+      (linear): Linear(256x0e+256x1o+256x2e -> 256x0e+256x1o+256x2e | 196608 weights)
+    )
+    (1): EquivariantProductBasisBlock(
+      (symmetric_contractions): SymmetricContraction(
+        (contractions): ModuleList(
+          (0): Contraction(
+            (contractions_weighting): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (contractions_features): ModuleList(
+              (0-1): 2 x GraphModule()
+            )
+            (weights): ParameterList(
+                (0): Parameter containing: [torch.float64 of size 4x4x256 (cuda:0)]
+                (1): Parameter containing: [torch.float64 of size 4x1x256 (cuda:0)]
+            )
+            (graph_opt_main): GraphModule()
+          )
+        )
+      )
+      (linear): Linear(256x0e -> 256x0e | 65536 weights)
+    )
+  )
+  (readouts): ModuleList(
+    (0): LinearReadoutBlock(
+      (linear): Linear(256x0e+256x1o+256x2e -> 1x0e | 256 weights)
+    )
+    (1): NonLinearReadoutBlock(
+      (linear_1): Linear(256x0e -> 16x0e | 4096 weights)
+      (non_linearity): Activation [x] (16x0e -> 16x0e)
+      (linear_2): Linear(16x0e -> 1x0e | 16 weights)
+    )
+  )
+  (scale_shift): ScaleShiftBlock(scale=0.946102, shift=-4.873118)
+)
+2025-01-16 23:12:04.047 INFO: Number of parameters: 2983184
+2025-01-16 23:12:04.047 INFO: Optimizer: Adam (
+Parameter Group 0
+    amsgrad: True
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.01
+    maximize: False
+    name: embedding
+    weight_decay: 0.0
+
+Parameter Group 1
+    amsgrad: True
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.01
+    maximize: False
+    name: interactions_decay
+    weight_decay: 5e-07
+
+Parameter Group 2
+    amsgrad: True
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.01
+    maximize: False
+    name: interactions_no_decay
+    weight_decay: 0.0
+
+Parameter Group 3
+    amsgrad: True
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.01
+    maximize: False
+    name: products
+    weight_decay: 5e-07
+
+Parameter Group 4
+    amsgrad: True
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.01
+    maximize: False
+    name: readouts
+    weight_decay: 0.0
+)
+2025-01-16 23:12:04.048 INFO: Using gradient clipping with tolerance=10.000
+2025-01-16 23:12:04.048 INFO: Started training
+2025-01-16 23:12:16.295 INFO: Epoch None: loss=953.5085, RMSE_E=4529.1 meV, RMSE_F=965.9 meV / A
+2025-01-16 23:12:43.501 INFO: Epoch 0: loss=58.0622, RMSE_E=469.5 meV, RMSE_F=240.5 meV / A
+2025-01-16 23:13:05.483 INFO: Epoch 2: loss=10.5899, RMSE_E=127.4 meV, RMSE_F=102.8 meV / A
+2025-01-16 23:13:27.782 INFO: Epoch 4: loss=5.3528, RMSE_E=37.5 meV, RMSE_F=73.2 meV / A
+2025-01-16 23:13:49.796 INFO: Epoch 6: loss=3.5201, RMSE_E=33.6 meV, RMSE_F=59.3 meV / A
+2025-01-16 23:14:11.818 INFO: Epoch 8: loss=2.7211, RMSE_E=34.6 meV, RMSE_F=52.2 meV / A
+2025-01-16 23:14:33.860 INFO: Epoch 10: loss=2.0635, RMSE_E=33.5 meV, RMSE_F=45.4 meV / A
+2025-01-16 23:14:56.000 INFO: Epoch 12: loss=1.5913, RMSE_E=25.6 meV, RMSE_F=39.9 meV / A
+2025-01-16 23:15:18.011 INFO: Epoch 14: loss=1.3910, RMSE_E=23.9 meV, RMSE_F=37.3 meV / A
+2025-01-16 23:15:40.034 INFO: Epoch 16: loss=1.1613, RMSE_E=22.7 meV, RMSE_F=34.1 meV / A
+2025-01-16 23:16:02.047 INFO: Epoch 18: loss=1.0037, RMSE_E=26.8 meV, RMSE_F=31.7 meV / A
+2025-01-16 23:16:24.049 INFO: Epoch 20: loss=0.9174, RMSE_E=27.6 meV, RMSE_F=30.3 meV / A
+2025-01-16 23:16:46.356 INFO: Epoch 22: loss=0.8186, RMSE_E=28.1 meV, RMSE_F=28.6 meV / A
+2025-01-16 23:17:08.595 INFO: Epoch 24: loss=0.7745, RMSE_E=23.4 meV, RMSE_F=27.8 meV / A
+2025-01-16 23:17:30.813 INFO: Epoch 26: loss=0.6737, RMSE_E=24.1 meV, RMSE_F=25.9 meV / A
+2025-01-16 23:17:53.029 INFO: Epoch 28: loss=0.6428, RMSE_E=25.8 meV, RMSE_F=25.3 meV / A
+2025-01-16 23:18:15.080 INFO: Epoch 30: loss=0.5925, RMSE_E=17.7 meV, RMSE_F=24.3 meV / A
+2025-01-16 23:18:37.030 INFO: Epoch 32: loss=0.5663, RMSE_E=19.4 meV, RMSE_F=23.8 meV / A
+2025-01-16 23:18:58.997 INFO: Epoch 34: loss=0.5513, RMSE_E=17.0 meV, RMSE_F=23.5 meV / A
+2025-01-16 23:19:21.134 INFO: Epoch 36: loss=0.4988, RMSE_E=18.3 meV, RMSE_F=22.3 meV / A
+2025-01-16 23:19:43.193 INFO: Epoch 38: loss=0.4806, RMSE_E=18.3 meV, RMSE_F=21.9 meV / A
+2025-01-16 23:20:05.380 INFO: Epoch 40: loss=0.4556, RMSE_E=14.8 meV, RMSE_F=21.3 meV / A
+2025-01-16 23:20:27.346 INFO: Epoch 42: loss=0.4273, RMSE_E=16.6 meV, RMSE_F=20.7 meV / A
+2025-01-16 23:20:49.311 INFO: Epoch 44: loss=0.4302, RMSE_E=15.2 meV, RMSE_F=20.7 meV / A
+2025-01-16 23:21:11.075 INFO: Epoch 46: loss=0.4074, RMSE_E=15.6 meV, RMSE_F=20.2 meV / A
+2025-01-16 23:21:33.063 INFO: Epoch 48: loss=0.3880, RMSE_E=14.3 meV, RMSE_F=19.7 meV / A
+2025-01-16 23:21:55.023 INFO: Epoch 50: loss=0.3808, RMSE_E=14.1 meV, RMSE_F=19.5 meV / A
+2025-01-16 23:22:16.999 INFO: Epoch 52: loss=0.3648, RMSE_E=14.1 meV, RMSE_F=19.1 meV / A
+2025-01-16 23:22:38.961 INFO: Epoch 54: loss=0.3416, RMSE_E=12.6 meV, RMSE_F=18.5 meV / A
+2025-01-16 23:23:00.936 INFO: Epoch 56: loss=0.3331, RMSE_E=16.3 meV, RMSE_F=18.2 meV / A
+2025-01-16 23:23:23.044 INFO: Epoch 58: loss=0.3189, RMSE_E=11.5 meV, RMSE_F=17.9 meV / A
+2025-01-16 23:23:45.230 INFO: Epoch 60: loss=0.3190, RMSE_E=13.9 meV, RMSE_F=17.9 meV / A
+2025-01-16 23:24:07.187 INFO: Epoch 62: loss=0.3133, RMSE_E=10.9 meV, RMSE_F=17.7 meV / A
+2025-01-16 23:24:29.323 INFO: Epoch 64: loss=0.3074, RMSE_E=11.3 meV, RMSE_F=17.5 meV / A
+2025-01-16 23:24:51.493 INFO: Epoch 66: loss=0.3127, RMSE_E=15.3 meV, RMSE_F=17.7 meV / A
+2025-01-16 23:25:13.452 INFO: Epoch 68: loss=0.2980, RMSE_E=14.8 meV, RMSE_F=17.3 meV / A
+2025-01-16 23:25:35.605 INFO: Epoch 70: loss=0.2832, RMSE_E=11.0 meV, RMSE_F=16.8 meV / A
+2025-01-16 23:25:57.762 INFO: Epoch 72: loss=0.2761, RMSE_E=10.8 meV, RMSE_F=16.6 meV / A
+2025-01-16 23:26:19.914 INFO: Epoch 74: loss=0.2748, RMSE_E=12.1 meV, RMSE_F=16.6 meV / A
+2025-01-16 23:26:42.063 INFO: Epoch 76: loss=0.2682, RMSE_E=13.8 meV, RMSE_F=16.4 meV / A
+2025-01-16 23:27:04.195 INFO: Epoch 78: loss=0.2623, RMSE_E=11.3 meV, RMSE_F=16.2 meV / A
+2025-01-16 23:27:26.399 INFO: Epoch 80: loss=0.2654, RMSE_E=13.0 meV, RMSE_F=16.3 meV / A
+2025-01-16 23:27:48.332 INFO: Epoch 82: loss=0.2585, RMSE_E=12.7 meV, RMSE_F=16.1 meV / A
+2025-01-16 23:28:10.461 INFO: Epoch 84: loss=0.2465, RMSE_E=10.6 meV, RMSE_F=15.7 meV / A
+2025-01-16 23:28:32.413 INFO: Epoch 86: loss=0.2411, RMSE_E=9.8 meV, RMSE_F=15.5 meV / A
+2025-01-16 23:28:54.367 INFO: Epoch 88: loss=0.2410, RMSE_E=9.5 meV, RMSE_F=15.5 meV / A
+2025-01-16 23:29:16.340 INFO: Epoch 90: loss=0.2380, RMSE_E=9.7 meV, RMSE_F=15.4 meV / A
+2025-01-16 23:29:38.310 INFO: Epoch 92: loss=0.2302, RMSE_E=9.8 meV, RMSE_F=15.2 meV / A
+2025-01-16 23:30:00.285 INFO: Epoch 94: loss=0.2217, RMSE_E=9.2 meV, RMSE_F=14.9 meV / A
+2025-01-16 23:30:22.263 INFO: Epoch 96: loss=0.2189, RMSE_E=8.8 meV, RMSE_F=14.8 meV / A
+2025-01-16 23:30:44.231 INFO: Epoch 98: loss=0.2199, RMSE_E=8.4 meV, RMSE_F=14.8 meV / A
+2025-01-16 23:31:05.985 INFO: Epoch 100: loss=0.2195, RMSE_E=8.9 meV, RMSE_F=14.8 meV / A
+2025-01-16 23:31:27.750 INFO: Epoch 102: loss=0.2138, RMSE_E=8.9 meV, RMSE_F=14.6 meV / A
+2025-01-16 23:31:49.722 INFO: Epoch 104: loss=0.2133, RMSE_E=9.1 meV, RMSE_F=14.6 meV / A
+2025-01-16 23:32:11.691 INFO: Epoch 106: loss=0.2079, RMSE_E=8.5 meV, RMSE_F=14.4 meV / A
+2025-01-16 23:32:33.651 INFO: Epoch 108: loss=0.2007, RMSE_E=8.9 meV, RMSE_F=14.2 meV / A
+2025-01-16 23:32:55.601 INFO: Epoch 110: loss=0.1973, RMSE_E=8.6 meV, RMSE_F=14.0 meV / A
+2025-01-16 23:33:17.590 INFO: Epoch 112: loss=0.1917, RMSE_E=8.0 meV, RMSE_F=13.8 meV / A
+2025-01-16 23:33:39.556 INFO: Epoch 114: loss=0.1906, RMSE_E=7.8 meV, RMSE_F=13.8 meV / A
+2025-01-16 23:34:01.516 INFO: Epoch 116: loss=0.1891, RMSE_E=8.0 meV, RMSE_F=13.7 meV / A
+2025-01-16 23:34:23.468 INFO: Epoch 118: loss=0.1860, RMSE_E=8.0 meV, RMSE_F=13.6 meV / A
+2025-01-16 23:34:45.415 INFO: Epoch 120: loss=0.1868, RMSE_E=7.6 meV, RMSE_F=13.7 meV / A
+2025-01-16 23:35:07.160 INFO: Epoch 122: loss=0.1853, RMSE_E=7.6 meV, RMSE_F=13.6 meV / A
+2025-01-16 23:35:29.370 INFO: Epoch 124: loss=0.1834, RMSE_E=7.8 meV, RMSE_F=13.5 meV / A
+2025-01-16 23:35:51.648 INFO: Epoch 126: loss=0.1818, RMSE_E=7.3 meV, RMSE_F=13.5 meV / A
+2025-01-16 23:36:13.945 INFO: Epoch 128: loss=0.1777, RMSE_E=7.3 meV, RMSE_F=13.3 meV / A
+2025-01-16 23:36:36.121 INFO: Epoch 130: loss=0.1754, RMSE_E=7.1 meV, RMSE_F=13.2 meV / A
+2025-01-16 23:36:58.171 INFO: Epoch 132: loss=0.1737, RMSE_E=7.0 meV, RMSE_F=13.2 meV / A
+2025-01-16 23:37:20.349 INFO: Epoch 134: loss=0.1713, RMSE_E=7.3 meV, RMSE_F=13.1 meV / A
+2025-01-16 23:37:42.518 INFO: Epoch 136: loss=0.1722, RMSE_E=6.7 meV, RMSE_F=13.1 meV / A
+2025-01-16 23:38:04.509 INFO: Epoch 138: loss=0.1695, RMSE_E=6.8 meV, RMSE_F=13.0 meV / A
+2025-01-16 23:38:26.694 INFO: Epoch 140: loss=0.1647, RMSE_E=7.0 meV, RMSE_F=12.8 meV / A
+2025-01-16 23:38:48.983 INFO: Epoch 142: loss=0.1647, RMSE_E=6.9 meV, RMSE_F=12.8 meV / A
+2025-01-16 23:39:11.050 INFO: Epoch 144: loss=0.1610, RMSE_E=6.4 meV, RMSE_F=12.7 meV / A
+2025-01-16 23:39:33.122 INFO: Epoch 146: loss=0.1626, RMSE_E=6.6 meV, RMSE_F=12.7 meV / A
+2025-01-16 23:39:55.040 INFO: Epoch 148: loss=0.1606, RMSE_E=6.7 meV, RMSE_F=12.7 meV / A
+2025-01-16 23:40:17.286 INFO: Epoch 150: loss=0.1595, RMSE_E=6.4 meV, RMSE_F=12.6 meV / A
+2025-01-16 23:40:39.546 INFO: Epoch 152: loss=0.1589, RMSE_E=6.1 meV, RMSE_F=12.6 meV / A
+2025-01-16 23:41:01.778 INFO: Epoch 154: loss=0.1565, RMSE_E=6.2 meV, RMSE_F=12.5 meV / A
+2025-01-16 23:41:23.953 INFO: Epoch 156: loss=0.1560, RMSE_E=6.3 meV, RMSE_F=12.5 meV / A
+2025-01-16 23:41:46.174 INFO: Epoch 158: loss=0.1535, RMSE_E=6.2 meV, RMSE_F=12.4 meV / A
+2025-01-16 23:42:08.191 INFO: Epoch 160: loss=0.1538, RMSE_E=6.4 meV, RMSE_F=12.4 meV / A
+2025-01-16 23:42:30.091 INFO: Epoch 162: loss=0.1592, RMSE_E=6.5 meV, RMSE_F=12.6 meV / A
+2025-01-16 23:42:52.015 INFO: Epoch 164: loss=0.1529, RMSE_E=5.8 meV, RMSE_F=12.4 meV / A
+2025-01-16 23:43:14.159 INFO: Epoch 166: loss=0.1532, RMSE_E=6.0 meV, RMSE_F=12.4 meV / A
+2025-01-16 23:43:36.064 INFO: Epoch 168: loss=0.1527, RMSE_E=5.8 meV, RMSE_F=12.4 meV / A
+2025-01-16 23:43:58.207 INFO: Epoch 170: loss=0.1498, RMSE_E=5.8 meV, RMSE_F=12.2 meV / A
+2025-01-16 23:44:20.387 INFO: Epoch 172: loss=0.1476, RMSE_E=5.7 meV, RMSE_F=12.1 meV / A
+2025-01-16 23:44:42.523 INFO: Epoch 174: loss=0.1452, RMSE_E=5.7 meV, RMSE_F=12.0 meV / A
+2025-01-16 23:45:04.649 INFO: Epoch 176: loss=0.1433, RMSE_E=5.4 meV, RMSE_F=12.0 meV / A
+2025-01-16 23:45:26.799 INFO: Epoch 178: loss=0.1464, RMSE_E=5.6 meV, RMSE_F=12.1 meV / A
+2025-01-16 23:45:48.730 INFO: Epoch 180: loss=0.1441, RMSE_E=5.5 meV, RMSE_F=12.0 meV / A
+2025-01-16 23:46:10.702 INFO: Epoch 182: loss=0.1447, RMSE_E=5.4 meV, RMSE_F=12.0 meV / A
+2025-01-16 23:46:32.641 INFO: Epoch 184: loss=0.1444, RMSE_E=5.3 meV, RMSE_F=12.0 meV / A
+2025-01-16 23:46:54.595 INFO: Epoch 186: loss=0.1418, RMSE_E=5.1 meV, RMSE_F=11.9 meV / A
+2025-01-16 23:47:16.744 INFO: Epoch 188: loss=0.1388, RMSE_E=5.1 meV, RMSE_F=11.8 meV / A
+2025-01-16 23:47:38.880 INFO: Epoch 190: loss=0.1378, RMSE_E=5.0 meV, RMSE_F=11.7 meV / A
+2025-01-16 23:48:00.998 INFO: Epoch 192: loss=0.1368, RMSE_E=5.1 meV, RMSE_F=11.7 meV / A
+2025-01-16 23:48:23.153 INFO: Epoch 194: loss=0.1380, RMSE_E=5.0 meV, RMSE_F=11.7 meV / A
+2025-01-16 23:48:45.090 INFO: Epoch 196: loss=0.1380, RMSE_E=5.2 meV, RMSE_F=11.7 meV / A
+2025-01-16 23:49:07.063 INFO: Epoch 198: loss=0.1361, RMSE_E=5.0 meV, RMSE_F=11.7 meV / A
+2025-01-16 23:49:29.215 INFO: Epoch 200: loss=0.1343, RMSE_E=4.9 meV, RMSE_F=11.6 meV / A
+2025-01-16 23:49:51.478 INFO: Epoch 202: loss=0.1386, RMSE_E=4.9 meV, RMSE_F=11.8 meV / A
+2025-01-16 23:50:13.601 INFO: Epoch 204: loss=0.1423, RMSE_E=5.0 meV, RMSE_F=11.9 meV / A
+2025-01-16 23:50:35.710 INFO: Epoch 206: loss=0.1406, RMSE_E=5.3 meV, RMSE_F=11.9 meV / A
+2025-01-16 23:50:57.582 INFO: Epoch 208: loss=0.1387, RMSE_E=5.1 meV, RMSE_F=11.8 meV / A
+2025-01-16 23:51:19.421 INFO: Epoch 210: loss=0.1362, RMSE_E=5.0 meV, RMSE_F=11.7 meV / A
+2025-01-16 23:51:41.332 INFO: Epoch 212: loss=0.1350, RMSE_E=5.0 meV, RMSE_F=11.6 meV / A
+2025-01-16 23:52:03.352 INFO: Epoch 214: loss=0.1344, RMSE_E=4.9 meV, RMSE_F=11.6 meV / A
+2025-01-16 23:52:25.389 INFO: Epoch 216: loss=0.1343, RMSE_E=5.1 meV, RMSE_F=11.6 meV / A
+2025-01-16 23:52:47.402 INFO: Epoch 218: loss=0.1329, RMSE_E=5.0 meV, RMSE_F=11.5 meV / A
+2025-01-16 23:53:09.619 INFO: Epoch 220: loss=0.1308, RMSE_E=4.9 meV, RMSE_F=11.4 meV / A
+2025-01-16 23:53:31.744 INFO: Epoch 222: loss=0.1313, RMSE_E=4.8 meV, RMSE_F=11.5 meV / A
+2025-01-16 23:53:53.572 INFO: Epoch 224: loss=0.1293, RMSE_E=4.7 meV, RMSE_F=11.4 meV / A
+2025-01-16 23:54:15.767 INFO: Epoch 226: loss=0.1295, RMSE_E=4.6 meV, RMSE_F=11.4 meV / A
+2025-01-16 23:54:37.809 INFO: Epoch 228: loss=0.1294, RMSE_E=4.7 meV, RMSE_F=11.4 meV / A
+2025-01-16 23:54:59.895 INFO: Epoch 230: loss=0.1291, RMSE_E=4.7 meV, RMSE_F=11.4 meV / A
+2025-01-16 23:55:22.209 INFO: Epoch 232: loss=0.1293, RMSE_E=4.6 meV, RMSE_F=11.4 meV / A
+2025-01-16 23:55:44.125 INFO: Epoch 234: loss=0.1294, RMSE_E=4.6 meV, RMSE_F=11.4 meV / A
+2025-01-16 23:56:06.139 INFO: Epoch 236: loss=0.1275, RMSE_E=4.5 meV, RMSE_F=11.3 meV / A
+2025-01-16 23:56:28.337 INFO: Epoch 238: loss=0.1276, RMSE_E=4.5 meV, RMSE_F=11.3 meV / A
+2025-01-16 23:56:50.386 INFO: Epoch 240: loss=0.1276, RMSE_E=4.5 meV, RMSE_F=11.3 meV / A
+2025-01-16 23:57:12.415 INFO: Epoch 242: loss=0.1293, RMSE_E=4.4 meV, RMSE_F=11.4 meV / A
+2025-01-16 23:57:34.454 INFO: Epoch 244: loss=0.1277, RMSE_E=4.5 meV, RMSE_F=11.3 meV / A
+2025-01-16 23:57:56.525 INFO: Epoch 246: loss=0.1265, RMSE_E=4.4 meV, RMSE_F=11.2 meV / A
+2025-01-16 23:58:18.803 INFO: Epoch 248: loss=0.1261, RMSE_E=4.4 meV, RMSE_F=11.2 meV / A
+2025-01-16 23:58:40.985 INFO: Epoch 250: loss=0.1252, RMSE_E=4.4 meV, RMSE_F=11.2 meV / A
+2025-01-16 23:59:03.128 INFO: Epoch 252: loss=0.1237, RMSE_E=4.4 meV, RMSE_F=11.1 meV / A
+2025-01-16 23:59:25.184 INFO: Epoch 254: loss=0.1230, RMSE_E=4.3 meV, RMSE_F=11.1 meV / A
+2025-01-16 23:59:47.417 INFO: Epoch 256: loss=0.1220, RMSE_E=4.3 meV, RMSE_F=11.0 meV / A
+2025-01-17 00:00:09.762 INFO: Epoch 258: loss=0.1246, RMSE_E=4.2 meV, RMSE_F=11.2 meV / A
+2025-01-17 00:00:31.709 INFO: Epoch 260: loss=0.1245, RMSE_E=4.3 meV, RMSE_F=11.2 meV / A
+2025-01-17 00:00:53.497 INFO: Epoch 262: loss=0.1237, RMSE_E=4.3 meV, RMSE_F=11.1 meV / A
+2025-01-17 00:01:15.284 INFO: Epoch 264: loss=0.1241, RMSE_E=4.2 meV, RMSE_F=11.1 meV / A
+2025-01-17 00:01:37.126 INFO: Epoch 266: loss=0.1241, RMSE_E=4.3 meV, RMSE_F=11.1 meV / A
+2025-01-17 00:01:59.069 INFO: Epoch 268: loss=0.1205, RMSE_E=4.2 meV, RMSE_F=11.0 meV / A
+2025-01-17 00:02:21.269 INFO: Epoch 270: loss=0.1194, RMSE_E=4.1 meV, RMSE_F=10.9 meV / A
+2025-01-17 00:02:43.424 INFO: Epoch 272: loss=0.1205, RMSE_E=4.0 meV, RMSE_F=11.0 meV / A
+2025-01-17 00:03:05.464 INFO: Epoch 274: loss=0.1227, RMSE_E=4.3 meV, RMSE_F=11.1 meV / A
+2025-01-17 00:03:27.477 INFO: Epoch 276: loss=0.1199, RMSE_E=4.2 meV, RMSE_F=11.0 meV / A
+2025-01-17 00:03:49.278 INFO: Epoch 278: loss=0.1202, RMSE_E=4.1 meV, RMSE_F=11.0 meV / A
+2025-01-17 00:04:11.221 INFO: Epoch 280: loss=0.1189, RMSE_E=4.1 meV, RMSE_F=10.9 meV / A
+2025-01-17 00:04:33.437 INFO: Epoch 282: loss=0.1198, RMSE_E=4.1 meV, RMSE_F=10.9 meV / A
+2025-01-17 00:04:55.415 INFO: Epoch 284: loss=0.1198, RMSE_E=4.1 meV, RMSE_F=10.9 meV / A
+2025-01-17 00:05:17.447 INFO: Epoch 286: loss=0.1211, RMSE_E=4.0 meV, RMSE_F=11.0 meV / A
+2025-01-17 00:05:39.435 INFO: Epoch 288: loss=0.1184, RMSE_E=4.1 meV, RMSE_F=10.9 meV / A
+2025-01-17 00:06:01.677 INFO: Epoch 290: loss=0.1189, RMSE_E=4.0 meV, RMSE_F=10.9 meV / A
+2025-01-17 00:06:23.752 INFO: Epoch 292: loss=0.1191, RMSE_E=4.0 meV, RMSE_F=10.9 meV / A
+2025-01-17 00:06:45.735 INFO: Epoch 294: loss=0.1205, RMSE_E=4.2 meV, RMSE_F=11.0 meV / A
+2025-01-17 00:07:07.709 INFO: Epoch 296: loss=0.1192, RMSE_E=4.1 meV, RMSE_F=10.9 meV / A
+2025-01-17 00:07:29.667 INFO: Epoch 298: loss=0.1175, RMSE_E=4.0 meV, RMSE_F=10.8 meV / A
+2025-01-17 00:07:51.728 INFO: Epoch 300: loss=0.1186, RMSE_E=4.0 meV, RMSE_F=10.9 meV / A
+2025-01-17 00:08:13.514 INFO: Epoch 302: loss=0.1177, RMSE_E=4.1 meV, RMSE_F=10.8 meV / A
+2025-01-17 00:08:35.358 INFO: Epoch 304: loss=0.1184, RMSE_E=4.0 meV, RMSE_F=10.9 meV / A
+2025-01-17 00:08:57.378 INFO: Epoch 306: loss=0.1181, RMSE_E=4.0 meV, RMSE_F=10.9 meV / A
+2025-01-17 00:09:19.388 INFO: Epoch 308: loss=0.1166, RMSE_E=4.0 meV, RMSE_F=10.8 meV / A
+2025-01-17 00:09:41.635 INFO: Epoch 310: loss=0.1165, RMSE_E=3.9 meV, RMSE_F=10.8 meV / A
+2025-01-17 00:10:03.747 INFO: Epoch 312: loss=0.1156, RMSE_E=3.8 meV, RMSE_F=10.8 meV / A
+2025-01-17 00:10:25.735 INFO: Epoch 314: loss=0.1155, RMSE_E=3.8 meV, RMSE_F=10.7 meV / A
+2025-01-17 00:10:47.722 INFO: Epoch 316: loss=0.1147, RMSE_E=3.9 meV, RMSE_F=10.7 meV / A
+2025-01-17 00:11:09.760 INFO: Epoch 318: loss=0.1153, RMSE_E=3.9 meV, RMSE_F=10.7 meV / A
+2025-01-17 00:11:31.578 INFO: Epoch 320: loss=0.1148, RMSE_E=4.0 meV, RMSE_F=10.7 meV / A
+2025-01-17 00:11:53.377 INFO: Epoch 322: loss=0.1139, RMSE_E=3.8 meV, RMSE_F=10.7 meV / A
+2025-01-17 00:12:15.396 INFO: Epoch 324: loss=0.1144, RMSE_E=3.8 meV, RMSE_F=10.7 meV / A
+2025-01-17 00:12:37.326 INFO: Epoch 326: loss=0.1148, RMSE_E=3.8 meV, RMSE_F=10.7 meV / A
+2025-01-17 00:12:59.271 INFO: Epoch 328: loss=0.1151, RMSE_E=3.9 meV, RMSE_F=10.7 meV / A
+2025-01-17 00:13:21.248 INFO: Epoch 330: loss=0.1148, RMSE_E=3.8 meV, RMSE_F=10.7 meV / A
+2025-01-17 00:13:43.206 INFO: Epoch 332: loss=0.1148, RMSE_E=3.8 meV, RMSE_F=10.7 meV / A
+2025-01-17 00:14:05.137 INFO: Epoch 334: loss=0.1138, RMSE_E=4.0 meV, RMSE_F=10.7 meV / A
+2025-01-17 00:14:27.310 INFO: Epoch 336: loss=0.1134, RMSE_E=3.8 meV, RMSE_F=10.6 meV / A
+2025-01-17 00:14:49.446 INFO: Epoch 338: loss=0.1135, RMSE_E=3.8 meV, RMSE_F=10.7 meV / A
+2025-01-17 00:15:11.385 INFO: Epoch 340: loss=0.1139, RMSE_E=3.7 meV, RMSE_F=10.7 meV / A
+2025-01-17 00:15:33.328 INFO: Epoch 342: loss=0.1131, RMSE_E=3.7 meV, RMSE_F=10.6 meV / A
+2025-01-17 00:15:55.499 INFO: Epoch 344: loss=0.1133, RMSE_E=3.8 meV, RMSE_F=10.6 meV / A
+2025-01-17 00:16:17.382 INFO: Epoch 346: loss=0.1130, RMSE_E=3.8 meV, RMSE_F=10.6 meV / A
+2025-01-17 00:16:39.425 INFO: Epoch 348: loss=0.1121, RMSE_E=3.8 meV, RMSE_F=10.6 meV / A
+2025-01-17 00:17:01.500 INFO: Epoch 350: loss=0.1117, RMSE_E=3.8 meV, RMSE_F=10.6 meV / A
+2025-01-17 00:17:23.690 INFO: Epoch 352: loss=0.1105, RMSE_E=3.7 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:17:45.872 INFO: Epoch 354: loss=0.1108, RMSE_E=3.7 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:18:07.852 INFO: Epoch 356: loss=0.1103, RMSE_E=3.7 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:18:30.062 INFO: Epoch 358: loss=0.1106, RMSE_E=3.7 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:18:52.071 INFO: Epoch 360: loss=0.1116, RMSE_E=3.6 meV, RMSE_F=10.6 meV / A
+2025-01-17 00:19:14.089 INFO: Epoch 362: loss=0.1121, RMSE_E=3.6 meV, RMSE_F=10.6 meV / A
+2025-01-17 00:19:36.140 INFO: Epoch 364: loss=0.1113, RMSE_E=3.7 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:19:58.090 INFO: Epoch 366: loss=0.1108, RMSE_E=3.7 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:20:19.935 INFO: Epoch 368: loss=0.1106, RMSE_E=3.8 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:20:41.943 INFO: Epoch 370: loss=0.1095, RMSE_E=3.8 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:21:04.151 INFO: Epoch 372: loss=0.1105, RMSE_E=3.7 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:21:26.123 INFO: Epoch 374: loss=0.1103, RMSE_E=3.6 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:21:47.972 INFO: Epoch 376: loss=0.1100, RMSE_E=3.7 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:22:09.740 INFO: Epoch 378: loss=0.1093, RMSE_E=3.7 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:22:31.714 INFO: Epoch 380: loss=0.1094, RMSE_E=3.8 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:22:53.475 INFO: Epoch 382: loss=0.1112, RMSE_E=3.6 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:23:15.247 INFO: Epoch 384: loss=0.1125, RMSE_E=3.7 meV, RMSE_F=10.6 meV / A
+2025-01-17 00:23:37.013 INFO: Epoch 386: loss=0.1104, RMSE_E=3.7 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:23:58.771 INFO: Epoch 388: loss=0.1095, RMSE_E=3.6 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:24:20.537 INFO: Epoch 390: loss=0.1098, RMSE_E=3.7 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:24:42.318 INFO: Epoch 392: loss=0.1095, RMSE_E=3.7 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:25:04.095 INFO: Epoch 394: loss=0.1093, RMSE_E=3.7 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:25:25.872 INFO: Epoch 396: loss=0.1116, RMSE_E=3.6 meV, RMSE_F=10.6 meV / A
+2025-01-17 00:25:47.648 INFO: Epoch 398: loss=0.1097, RMSE_E=3.6 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:26:09.453 INFO: Epoch 400: loss=0.1107, RMSE_E=3.8 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:26:31.227 INFO: Epoch 402: loss=0.1096, RMSE_E=3.8 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:26:52.996 INFO: Epoch 404: loss=0.1102, RMSE_E=3.6 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:27:14.772 INFO: Epoch 406: loss=0.1107, RMSE_E=3.6 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:27:36.540 INFO: Epoch 408: loss=0.1116, RMSE_E=3.7 meV, RMSE_F=10.6 meV / A
+2025-01-17 00:27:58.304 INFO: Epoch 410: loss=0.1110, RMSE_E=3.5 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:28:20.082 INFO: Epoch 412: loss=0.1110, RMSE_E=3.6 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:28:41.855 INFO: Epoch 414: loss=0.1115, RMSE_E=3.8 meV, RMSE_F=10.6 meV / A
+2025-01-17 00:29:03.632 INFO: Epoch 416: loss=0.1113, RMSE_E=3.8 meV, RMSE_F=10.6 meV / A
+2025-01-17 00:29:25.415 INFO: Epoch 418: loss=0.1099, RMSE_E=3.6 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:29:47.194 INFO: Epoch 420: loss=0.1101, RMSE_E=3.7 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:30:08.972 INFO: Epoch 422: loss=0.1083, RMSE_E=3.6 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:30:30.954 INFO: Epoch 424: loss=0.1104, RMSE_E=3.6 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:30:52.914 INFO: Epoch 426: loss=0.1103, RMSE_E=3.6 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:31:15.003 INFO: Epoch 428: loss=0.1086, RMSE_E=3.6 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:31:36.827 INFO: Epoch 430: loss=0.1090, RMSE_E=3.4 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:31:58.604 INFO: Epoch 432: loss=0.1103, RMSE_E=3.7 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:32:20.396 INFO: Epoch 434: loss=0.1087, RMSE_E=3.7 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:32:42.230 INFO: Epoch 436: loss=0.1094, RMSE_E=3.6 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:33:04.212 INFO: Epoch 438: loss=0.1085, RMSE_E=3.6 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:33:26.183 INFO: Epoch 440: loss=0.1074, RMSE_E=3.6 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:33:48.321 INFO: Epoch 442: loss=0.1082, RMSE_E=3.6 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:34:10.112 INFO: Epoch 444: loss=0.1072, RMSE_E=3.5 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:34:32.156 INFO: Epoch 446: loss=0.1083, RMSE_E=3.4 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:34:53.967 INFO: Epoch 448: loss=0.1099, RMSE_E=3.6 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:35:15.743 INFO: Epoch 450: loss=0.1105, RMSE_E=3.6 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:35:37.510 INFO: Epoch 452: loss=0.1086, RMSE_E=3.7 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:35:59.419 INFO: Epoch 454: loss=0.1110, RMSE_E=3.6 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:36:21.419 INFO: Epoch 456: loss=0.1093, RMSE_E=3.6 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:36:43.364 INFO: Epoch 458: loss=0.1068, RMSE_E=3.6 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:37:05.617 INFO: Epoch 460: loss=0.1079, RMSE_E=3.6 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:37:27.546 INFO: Epoch 462: loss=0.1070, RMSE_E=3.5 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:37:49.463 INFO: Epoch 464: loss=0.1078, RMSE_E=3.5 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:38:11.423 INFO: Epoch 466: loss=0.1060, RMSE_E=3.6 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:38:33.618 INFO: Epoch 468: loss=0.1053, RMSE_E=3.5 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:38:55.824 INFO: Epoch 470: loss=0.1057, RMSE_E=3.4 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:39:17.769 INFO: Epoch 472: loss=0.1066, RMSE_E=3.4 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:39:39.700 INFO: Epoch 474: loss=0.1058, RMSE_E=3.4 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:40:01.699 INFO: Epoch 476: loss=0.1061, RMSE_E=3.5 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:40:23.821 INFO: Epoch 478: loss=0.1077, RMSE_E=3.5 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:40:45.945 INFO: Epoch 480: loss=0.1077, RMSE_E=3.5 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:41:08.005 INFO: Epoch 482: loss=0.1064, RMSE_E=3.5 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:41:29.969 INFO: Epoch 484: loss=0.1068, RMSE_E=3.4 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:41:51.901 INFO: Epoch 486: loss=0.1055, RMSE_E=3.4 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:42:13.703 INFO: Epoch 488: loss=0.1058, RMSE_E=3.3 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:42:35.496 INFO: Epoch 490: loss=0.1054, RMSE_E=3.4 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:42:57.288 INFO: Epoch 492: loss=0.1057, RMSE_E=3.3 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:43:19.241 INFO: Epoch 494: loss=0.1053, RMSE_E=3.4 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:43:41.428 INFO: Epoch 496: loss=0.1059, RMSE_E=3.4 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:44:03.438 INFO: Epoch 498: loss=0.1068, RMSE_E=3.5 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:44:25.466 INFO: Epoch 500: loss=0.1065, RMSE_E=3.6 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:44:47.488 INFO: Epoch 502: loss=0.1052, RMSE_E=3.6 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:45:09.733 INFO: Epoch 504: loss=0.1051, RMSE_E=3.5 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:45:31.937 INFO: Epoch 506: loss=0.1059, RMSE_E=3.5 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:45:53.928 INFO: Epoch 508: loss=0.1052, RMSE_E=3.5 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:46:15.924 INFO: Epoch 510: loss=0.1068, RMSE_E=3.5 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:46:37.864 INFO: Epoch 512: loss=0.1061, RMSE_E=3.4 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:46:59.730 INFO: Epoch 514: loss=0.1056, RMSE_E=3.4 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:47:21.718 INFO: Epoch 516: loss=0.1051, RMSE_E=3.5 meV, RMSE_F=10.2 meV / A
+2025-01-17 00:47:43.826 INFO: Epoch 518: loss=0.1045, RMSE_E=3.4 meV, RMSE_F=10.2 meV / A
+2025-01-17 00:48:06.026 INFO: Epoch 520: loss=0.1087, RMSE_E=3.5 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:48:28.009 INFO: Epoch 522: loss=0.1108, RMSE_E=3.8 meV, RMSE_F=10.5 meV / A
+2025-01-17 00:48:50.100 INFO: Epoch 524: loss=0.1080, RMSE_E=3.8 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:49:12.148 INFO: Epoch 526: loss=0.1077, RMSE_E=3.6 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:49:34.128 INFO: Epoch 528: loss=0.1071, RMSE_E=3.5 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:49:56.149 INFO: Epoch 530: loss=0.1062, RMSE_E=3.5 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:50:18.176 INFO: Epoch 532: loss=0.1067, RMSE_E=3.5 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:50:40.192 INFO: Epoch 534: loss=0.1078, RMSE_E=3.4 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:51:02.157 INFO: Epoch 536: loss=0.1064, RMSE_E=3.4 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:51:24.129 INFO: Epoch 538: loss=0.1068, RMSE_E=3.4 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:51:46.086 INFO: Epoch 540: loss=0.1060, RMSE_E=3.3 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:52:08.033 INFO: Epoch 542: loss=0.1055, RMSE_E=3.3 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:52:30.015 INFO: Epoch 544: loss=0.1050, RMSE_E=3.4 meV, RMSE_F=10.2 meV / A
+2025-01-17 00:52:52.027 INFO: Epoch 546: loss=0.1064, RMSE_E=3.3 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:53:13.924 INFO: Epoch 548: loss=0.1071, RMSE_E=3.3 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:53:35.745 INFO: Epoch 550: loss=0.1052, RMSE_E=3.3 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:53:57.721 INFO: Epoch 552: loss=0.1055, RMSE_E=3.2 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:54:19.672 INFO: Epoch 554: loss=0.1058, RMSE_E=3.3 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:54:41.652 INFO: Epoch 556: loss=0.1056, RMSE_E=3.4 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:55:03.601 INFO: Epoch 558: loss=0.1068, RMSE_E=3.4 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:55:25.557 INFO: Epoch 560: loss=0.1063, RMSE_E=3.2 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:55:47.516 INFO: Epoch 562: loss=0.1047, RMSE_E=3.4 meV, RMSE_F=10.2 meV / A
+2025-01-17 00:56:09.509 INFO: Epoch 564: loss=0.1084, RMSE_E=3.6 meV, RMSE_F=10.4 meV / A
+2025-01-17 00:56:31.418 INFO: Epoch 566: loss=0.1057, RMSE_E=3.5 meV, RMSE_F=10.3 meV / A
+2025-01-17 00:56:53.369 INFO: Epoch 568: loss=0.1051, RMSE_E=3.6 meV, RMSE_F=10.2 meV / A
+2025-01-17 00:57:15.339 INFO: Epoch 570: loss=0.1043, RMSE_E=3.4 meV, RMSE_F=10.2 meV / A
+2025-01-17 00:57:37.560 INFO: Epoch 572: loss=0.1039, RMSE_E=3.4 meV, RMSE_F=10.2 meV / A
+2025-01-17 00:57:59.767 INFO: Epoch 574: loss=0.1038, RMSE_E=3.4 meV, RMSE_F=10.2 meV / A
+2025-01-17 00:58:21.955 INFO: Epoch 576: loss=0.1033, RMSE_E=3.4 meV, RMSE_F=10.2 meV / A
+2025-01-17 00:58:44.219 INFO: Epoch 578: loss=0.1036, RMSE_E=3.4 meV, RMSE_F=10.2 meV / A
+2025-01-17 00:59:06.225 INFO: Epoch 580: loss=0.1038, RMSE_E=3.3 meV, RMSE_F=10.2 meV / A
+2025-01-17 00:59:28.223 INFO: Epoch 582: loss=0.1037, RMSE_E=3.3 meV, RMSE_F=10.2 meV / A
+2025-01-17 00:59:50.295 INFO: Epoch 584: loss=0.1030, RMSE_E=3.3 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:00:12.613 INFO: Epoch 586: loss=0.1028, RMSE_E=3.2 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:00:34.855 INFO: Epoch 588: loss=0.1022, RMSE_E=3.2 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:00:56.827 INFO: Epoch 590: loss=0.1025, RMSE_E=3.2 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:01:18.637 INFO: Epoch 592: loss=0.1022, RMSE_E=3.2 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:01:40.627 INFO: Epoch 594: loss=0.1021, RMSE_E=3.2 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:02:02.797 INFO: Epoch 596: loss=0.1025, RMSE_E=3.2 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:02:24.801 INFO: Epoch 598: loss=0.1022, RMSE_E=3.2 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:02:46.908 INFO: Epoch 600: loss=0.1021, RMSE_E=3.2 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:03:08.949 INFO: Epoch 602: loss=0.1024, RMSE_E=3.2 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:03:30.993 INFO: Epoch 604: loss=0.1023, RMSE_E=3.2 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:03:52.951 INFO: Epoch 606: loss=0.1017, RMSE_E=3.2 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:04:15.258 INFO: Epoch 608: loss=0.1012, RMSE_E=3.1 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:04:37.487 INFO: Epoch 610: loss=0.1017, RMSE_E=3.1 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:04:59.468 INFO: Epoch 612: loss=0.1013, RMSE_E=3.2 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:05:21.502 INFO: Epoch 614: loss=0.1011, RMSE_E=3.1 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:05:43.753 INFO: Epoch 616: loss=0.1010, RMSE_E=3.1 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:06:05.893 INFO: Epoch 618: loss=0.1012, RMSE_E=3.1 meV, RMSE_F=10.1 meV / A
+2025-01-17 01:06:27.931 INFO: Epoch 620: loss=0.1005, RMSE_E=3.1 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:06:49.965 INFO: Epoch 622: loss=0.1002, RMSE_E=3.1 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:07:12.016 INFO: Epoch 624: loss=0.1001, RMSE_E=3.0 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:07:34.205 INFO: Epoch 626: loss=0.0999, RMSE_E=3.1 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:07:56.377 INFO: Epoch 628: loss=0.0994, RMSE_E=3.2 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:08:18.594 INFO: Epoch 630: loss=0.0995, RMSE_E=3.1 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:08:40.679 INFO: Epoch 632: loss=0.1000, RMSE_E=3.0 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:09:02.699 INFO: Epoch 634: loss=0.1001, RMSE_E=3.1 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:09:24.676 INFO: Epoch 636: loss=0.0998, RMSE_E=3.1 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:09:46.583 INFO: Epoch 638: loss=0.0996, RMSE_E=3.1 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:10:08.648 INFO: Epoch 640: loss=0.0995, RMSE_E=3.1 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:10:30.530 INFO: Epoch 642: loss=0.0993, RMSE_E=3.1 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:10:52.711 INFO: Epoch 644: loss=0.0990, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:11:14.993 INFO: Epoch 646: loss=0.0993, RMSE_E=3.0 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:11:37.022 INFO: Epoch 648: loss=0.0994, RMSE_E=3.1 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:11:59.064 INFO: Epoch 650: loss=0.0993, RMSE_E=3.1 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:12:21.038 INFO: Epoch 652: loss=0.0994, RMSE_E=3.0 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:12:43.064 INFO: Epoch 654: loss=0.0997, RMSE_E=3.0 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:13:05.067 INFO: Epoch 656: loss=0.0988, RMSE_E=3.1 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:13:27.322 INFO: Epoch 658: loss=0.0988, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:13:49.152 INFO: Epoch 660: loss=0.0992, RMSE_E=3.0 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:14:11.078 INFO: Epoch 662: loss=0.0990, RMSE_E=3.0 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:14:33.143 INFO: Epoch 664: loss=0.0991, RMSE_E=3.0 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:14:55.097 INFO: Epoch 666: loss=0.0986, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:15:17.416 INFO: Epoch 668: loss=0.0986, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:15:39.395 INFO: Epoch 670: loss=0.0982, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:16:01.626 INFO: Epoch 672: loss=0.0987, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:16:23.613 INFO: Epoch 674: loss=0.0990, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:16:45.647 INFO: Epoch 676: loss=0.0985, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:17:07.631 INFO: Epoch 678: loss=0.0990, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:17:29.604 INFO: Epoch 680: loss=0.0995, RMSE_E=2.9 meV, RMSE_F=10.0 meV / A
+2025-01-17 01:17:51.603 INFO: Epoch 682: loss=0.0983, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:18:13.627 INFO: Epoch 684: loss=0.0980, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:18:35.942 INFO: Epoch 686: loss=0.0983, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:18:58.036 INFO: Epoch 688: loss=0.0988, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:19:20.058 INFO: Epoch 690: loss=0.0983, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:19:42.050 INFO: Epoch 692: loss=0.0986, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:20:04.077 INFO: Epoch 694: loss=0.0978, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:20:26.346 INFO: Epoch 696: loss=0.0977, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:20:48.606 INFO: Epoch 698: loss=0.0977, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:21:10.633 INFO: Epoch 700: loss=0.0978, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:21:32.598 INFO: Epoch 702: loss=0.0975, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:21:54.670 INFO: Epoch 704: loss=0.0978, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:22:16.638 INFO: Epoch 706: loss=0.0977, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:22:38.601 INFO: Epoch 708: loss=0.0978, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:23:00.504 INFO: Epoch 710: loss=0.0973, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:23:22.703 INFO: Epoch 712: loss=0.0972, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:23:44.792 INFO: Epoch 714: loss=0.0974, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:24:06.617 INFO: Epoch 716: loss=0.0977, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:24:28.476 INFO: Epoch 718: loss=0.0971, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:24:50.737 INFO: Epoch 720: loss=0.0970, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:25:12.760 INFO: Epoch 722: loss=0.0973, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:25:34.669 INFO: Epoch 724: loss=0.0969, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:25:56.866 INFO: Epoch 726: loss=0.0971, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:26:18.883 INFO: Epoch 728: loss=0.0968, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:26:41.111 INFO: Epoch 730: loss=0.0976, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:27:03.051 INFO: Epoch 732: loss=0.0975, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:27:25.030 INFO: Epoch 734: loss=0.0971, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:27:46.851 INFO: Epoch 736: loss=0.0971, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:28:08.646 INFO: Epoch 738: loss=0.0969, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:28:30.453 INFO: Epoch 740: loss=0.0969, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:28:52.502 INFO: Epoch 742: loss=0.0977, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:29:14.544 INFO: Epoch 744: loss=0.0967, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:29:36.859 INFO: Epoch 746: loss=0.0970, RMSE_E=3.0 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:29:58.813 INFO: Epoch 748: loss=0.0970, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:30:20.672 INFO: Epoch 750: loss=0.0972, RMSE_E=2.8 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:30:42.566 INFO: Epoch 752: loss=0.0957, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:31:04.751 INFO: Epoch 754: loss=0.0963, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:31:26.741 INFO: Epoch 756: loss=0.0960, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:31:48.757 INFO: Epoch 758: loss=0.0963, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:32:10.722 INFO: Epoch 760: loss=0.0967, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:32:32.713 INFO: Epoch 762: loss=0.0968, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:32:54.680 INFO: Epoch 764: loss=0.0961, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:33:16.709 INFO: Epoch 766: loss=0.0963, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:33:38.710 INFO: Epoch 768: loss=0.0962, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:34:00.685 INFO: Epoch 770: loss=0.0960, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:34:22.468 INFO: Epoch 772: loss=0.0962, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:34:44.363 INFO: Epoch 774: loss=0.0961, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:35:06.315 INFO: Epoch 776: loss=0.0963, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:35:28.241 INFO: Epoch 778: loss=0.0964, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:35:50.164 INFO: Epoch 780: loss=0.0963, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:36:11.984 INFO: Epoch 782: loss=0.0953, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:36:33.976 INFO: Epoch 784: loss=0.0958, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:36:55.752 INFO: Epoch 786: loss=0.0963, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:37:17.611 INFO: Epoch 788: loss=0.0956, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:37:39.614 INFO: Epoch 790: loss=0.0957, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:38:01.610 INFO: Epoch 792: loss=0.0955, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:38:23.593 INFO: Epoch 794: loss=0.0955, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:38:45.568 INFO: Epoch 796: loss=0.0960, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:39:07.574 INFO: Epoch 798: loss=0.0962, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:39:29.606 INFO: Epoch 800: loss=0.0962, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:39:51.548 INFO: Epoch 802: loss=0.0960, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:40:13.532 INFO: Epoch 804: loss=0.0962, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:40:35.522 INFO: Epoch 806: loss=0.0966, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:40:57.539 INFO: Epoch 808: loss=0.0960, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:41:19.510 INFO: Epoch 810: loss=0.0962, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:41:41.497 INFO: Epoch 812: loss=0.0976, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:42:03.293 INFO: Epoch 814: loss=0.0972, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:42:25.078 INFO: Epoch 816: loss=0.0970, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:42:46.860 INFO: Epoch 818: loss=0.0957, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:43:08.647 INFO: Epoch 820: loss=0.0954, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:43:30.431 INFO: Epoch 822: loss=0.0954, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:43:52.219 INFO: Epoch 824: loss=0.0957, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:44:14.132 INFO: Epoch 826: loss=0.0949, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 01:44:36.478 INFO: Epoch 828: loss=0.0952, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:44:58.454 INFO: Epoch 830: loss=0.0954, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:45:20.253 INFO: Epoch 832: loss=0.0957, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:45:42.129 INFO: Epoch 834: loss=0.0963, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:46:04.160 INFO: Epoch 836: loss=0.0966, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:46:26.160 INFO: Epoch 838: loss=0.0958, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:46:48.133 INFO: Epoch 840: loss=0.0959, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:47:10.140 INFO: Epoch 842: loss=0.0953, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:47:32.125 INFO: Epoch 844: loss=0.0955, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:47:54.096 INFO: Epoch 846: loss=0.0959, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:48:16.063 INFO: Epoch 848: loss=0.0961, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:48:38.095 INFO: Epoch 850: loss=0.0956, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:49:00.103 INFO: Epoch 852: loss=0.0972, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:49:22.173 INFO: Epoch 854: loss=0.0962, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:49:44.128 INFO: Epoch 856: loss=0.0958, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:50:05.945 INFO: Epoch 858: loss=0.0954, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:50:27.754 INFO: Epoch 860: loss=0.0946, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 01:50:49.894 INFO: Epoch 862: loss=0.0955, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:51:11.868 INFO: Epoch 864: loss=0.0949, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 01:51:33.830 INFO: Epoch 866: loss=0.0948, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 01:51:55.726 INFO: Epoch 868: loss=0.0947, RMSE_E=3.0 meV, RMSE_F=9.7 meV / A
+2025-01-17 01:52:17.530 INFO: Epoch 870: loss=0.0942, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 01:52:39.838 INFO: Epoch 872: loss=0.0948, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 01:53:01.816 INFO: Epoch 874: loss=0.0946, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 01:53:23.833 INFO: Epoch 876: loss=0.0967, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:53:45.848 INFO: Epoch 878: loss=0.0970, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:54:07.836 INFO: Epoch 880: loss=0.0972, RMSE_E=2.9 meV, RMSE_F=9.9 meV / A
+2025-01-17 01:54:29.829 INFO: Epoch 882: loss=0.0961, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:54:51.816 INFO: Epoch 884: loss=0.0950, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 01:55:13.797 INFO: Epoch 886: loss=0.0960, RMSE_E=3.0 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:55:35.811 INFO: Epoch 888: loss=0.0945, RMSE_E=3.1 meV, RMSE_F=9.7 meV / A
+2025-01-17 01:55:57.843 INFO: Epoch 890: loss=0.0955, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:56:19.782 INFO: Epoch 892: loss=0.0952, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:56:41.661 INFO: Epoch 894: loss=0.0955, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:57:03.687 INFO: Epoch 896: loss=0.0948, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 01:57:25.552 INFO: Epoch 898: loss=0.0950, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 01:57:47.379 INFO: Epoch 900: loss=0.0946, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 01:58:09.210 INFO: Epoch 902: loss=0.0952, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:58:31.195 INFO: Epoch 904: loss=0.0954, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:58:53.152 INFO: Epoch 906: loss=0.0947, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 01:59:15.174 INFO: Epoch 908: loss=0.0952, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 01:59:37.249 INFO: Epoch 910: loss=0.0950, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 01:59:59.235 INFO: Epoch 912: loss=0.0942, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:00:21.451 INFO: Epoch 914: loss=0.0942, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:00:43.412 INFO: Epoch 916: loss=0.0948, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:01:05.389 INFO: Epoch 918: loss=0.0947, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:01:27.363 INFO: Epoch 920: loss=0.0949, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:01:49.346 INFO: Epoch 922: loss=0.0945, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:02:11.318 INFO: Epoch 924: loss=0.0944, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:02:33.139 INFO: Epoch 926: loss=0.0953, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 02:02:54.951 INFO: Epoch 928: loss=0.0945, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:03:16.753 INFO: Epoch 930: loss=0.0948, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:03:38.564 INFO: Epoch 932: loss=0.0940, RMSE_E=2.7 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:04:00.541 INFO: Epoch 934: loss=0.0946, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:04:22.326 INFO: Epoch 936: loss=0.0949, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:04:44.293 INFO: Epoch 938: loss=0.0965, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 02:05:06.300 INFO: Epoch 940: loss=0.0950, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:05:28.315 INFO: Epoch 942: loss=0.0947, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:05:50.324 INFO: Epoch 944: loss=0.0946, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:06:12.227 INFO: Epoch 946: loss=0.0951, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 02:06:34.018 INFO: Epoch 948: loss=0.0954, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 02:06:55.963 INFO: Epoch 950: loss=0.0957, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 02:07:17.989 INFO: Epoch 952: loss=0.0944, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:07:39.969 INFO: Epoch 954: loss=0.0955, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 02:08:01.912 INFO: Epoch 956: loss=0.0944, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:08:23.865 INFO: Epoch 958: loss=0.0950, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:08:45.820 INFO: Epoch 960: loss=0.0939, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:09:07.975 INFO: Epoch 962: loss=0.0943, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:09:29.973 INFO: Epoch 964: loss=0.0950, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:09:51.801 INFO: Epoch 966: loss=0.0947, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:10:13.636 INFO: Epoch 968: loss=0.0947, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:10:35.627 INFO: Epoch 970: loss=0.0938, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:10:57.883 INFO: Epoch 972: loss=0.0948, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:11:19.860 INFO: Epoch 974: loss=0.0951, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 02:11:41.858 INFO: Epoch 976: loss=0.0956, RMSE_E=2.9 meV, RMSE_F=9.8 meV / A
+2025-01-17 02:12:03.845 INFO: Epoch 978: loss=0.0956, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 02:12:25.810 INFO: Epoch 980: loss=0.0948, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:12:47.873 INFO: Epoch 982: loss=0.0947, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:13:09.883 INFO: Epoch 984: loss=0.0939, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:13:31.955 INFO: Epoch 986: loss=0.0940, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:13:54.000 INFO: Epoch 988: loss=0.0945, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:14:16.056 INFO: Epoch 990: loss=0.0947, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:14:38.130 INFO: Epoch 992: loss=0.0944, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:15:00.185 INFO: Epoch 994: loss=0.0939, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:15:22.220 INFO: Epoch 996: loss=0.0938, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:15:44.459 INFO: Epoch 998: loss=0.0942, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:16:06.420 INFO: Epoch 1000: loss=0.0947, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:16:28.466 INFO: Epoch 1002: loss=0.0941, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:16:50.502 INFO: Epoch 1004: loss=0.0946, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:17:12.532 INFO: Epoch 1006: loss=0.0941, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:17:34.600 INFO: Epoch 1008: loss=0.0942, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:17:56.594 INFO: Epoch 1010: loss=0.0945, RMSE_E=2.7 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:18:18.606 INFO: Epoch 1012: loss=0.0941, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:18:40.641 INFO: Epoch 1014: loss=0.0942, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:19:02.610 INFO: Epoch 1016: loss=0.0940, RMSE_E=2.7 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:19:24.624 INFO: Epoch 1018: loss=0.0945, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:19:46.692 INFO: Epoch 1020: loss=0.0942, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:20:08.593 INFO: Epoch 1022: loss=0.0942, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:20:30.610 INFO: Epoch 1024: loss=0.0936, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:20:52.893 INFO: Epoch 1026: loss=0.0937, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:21:14.709 INFO: Epoch 1028: loss=0.0936, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:21:36.565 INFO: Epoch 1030: loss=0.0961, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 02:21:58.586 INFO: Epoch 1032: loss=0.1016, RMSE_E=3.5 meV, RMSE_F=10.1 meV / A
+2025-01-17 02:22:20.573 INFO: Epoch 1034: loss=0.0972, RMSE_E=3.1 meV, RMSE_F=9.9 meV / A
+2025-01-17 02:22:42.576 INFO: Epoch 1036: loss=0.0950, RMSE_E=3.1 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:23:04.662 INFO: Epoch 1038: loss=0.0947, RMSE_E=3.0 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:23:26.757 INFO: Epoch 1040: loss=0.0941, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:23:48.795 INFO: Epoch 1042: loss=0.0948, RMSE_E=3.0 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:24:10.872 INFO: Epoch 1044: loss=0.0948, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:24:32.956 INFO: Epoch 1046: loss=0.0947, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:24:54.836 INFO: Epoch 1048: loss=0.0949, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:25:16.637 INFO: Epoch 1050: loss=0.0946, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:25:38.605 INFO: Epoch 1052: loss=0.0940, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:26:00.588 INFO: Epoch 1054: loss=0.0939, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:26:22.629 INFO: Epoch 1056: loss=0.0941, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:26:44.511 INFO: Epoch 1058: loss=0.0949, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:27:06.332 INFO: Epoch 1060: loss=0.0957, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 02:27:28.307 INFO: Epoch 1062: loss=0.0964, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 02:27:50.125 INFO: Epoch 1064: loss=0.0954, RMSE_E=2.8 meV, RMSE_F=9.8 meV / A
+2025-01-17 02:28:12.104 INFO: Epoch 1066: loss=0.0947, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:28:34.126 INFO: Epoch 1068: loss=0.0937, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:28:56.181 INFO: Epoch 1070: loss=0.0937, RMSE_E=2.9 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:29:18.159 INFO: Epoch 1072: loss=0.0941, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:29:40.241 INFO: Epoch 1074: loss=0.0945, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:30:02.095 INFO: Epoch 1076: loss=0.0939, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:30:24.047 INFO: Epoch 1078: loss=0.0936, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:30:46.062 INFO: Epoch 1080: loss=0.0935, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:31:08.397 INFO: Epoch 1082: loss=0.0932, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:31:30.663 INFO: Epoch 1084: loss=0.0934, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:31:52.676 INFO: Epoch 1086: loss=0.0935, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:32:14.686 INFO: Epoch 1088: loss=0.0933, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:32:36.577 INFO: Epoch 1090: loss=0.0935, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:32:58.507 INFO: Epoch 1092: loss=0.0933, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:33:20.308 INFO: Epoch 1094: loss=0.0933, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:33:42.337 INFO: Epoch 1096: loss=0.0933, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:34:04.350 INFO: Epoch 1098: loss=0.0931, RMSE_E=2.8 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:34:26.470 INFO: Epoch 1100: loss=0.0932, RMSE_E=2.8 meV, RMSE_F=9.7 meV / A
+2025-01-17 02:34:48.260 INFO: Epoch 1102: loss=0.0930, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:35:10.382 INFO: Epoch 1104: loss=0.0930, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:35:32.281 INFO: Epoch 1106: loss=0.0930, RMSE_E=2.8 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:35:54.317 INFO: Epoch 1108: loss=0.0928, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:36:16.595 INFO: Epoch 1110: loss=0.0929, RMSE_E=2.8 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:36:38.592 INFO: Epoch 1112: loss=0.0927, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:37:00.830 INFO: Epoch 1114: loss=0.0928, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:37:22.905 INFO: Epoch 1116: loss=0.0927, RMSE_E=2.8 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:37:44.962 INFO: Epoch 1118: loss=0.0925, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:38:07.246 INFO: Epoch 1120: loss=0.0925, RMSE_E=2.8 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:38:29.245 INFO: Epoch 1122: loss=0.0925, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:38:51.498 INFO: Epoch 1124: loss=0.0922, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:39:13.700 INFO: Epoch 1126: loss=0.0921, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:39:35.872 INFO: Epoch 1128: loss=0.0922, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:39:57.871 INFO: Epoch 1130: loss=0.0922, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:40:19.842 INFO: Epoch 1132: loss=0.0922, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:40:41.863 INFO: Epoch 1134: loss=0.0929, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:41:03.905 INFO: Epoch 1136: loss=0.0926, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:41:25.868 INFO: Epoch 1138: loss=0.0925, RMSE_E=2.8 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:41:47.835 INFO: Epoch 1140: loss=0.0925, RMSE_E=2.8 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:42:09.823 INFO: Epoch 1142: loss=0.0924, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:42:31.860 INFO: Epoch 1144: loss=0.0924, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:42:53.836 INFO: Epoch 1146: loss=0.0922, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:43:15.789 INFO: Epoch 1148: loss=0.0924, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:43:37.682 INFO: Epoch 1150: loss=0.0922, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:43:59.474 INFO: Epoch 1152: loss=0.0922, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:44:21.327 INFO: Epoch 1154: loss=0.0923, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:44:43.390 INFO: Epoch 1156: loss=0.0922, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:45:05.484 INFO: Epoch 1158: loss=0.0923, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:45:27.455 INFO: Epoch 1160: loss=0.0923, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:45:49.325 INFO: Epoch 1162: loss=0.0920, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:46:11.632 INFO: Epoch 1164: loss=0.0922, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:46:33.628 INFO: Epoch 1166: loss=0.0920, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:46:55.930 INFO: Epoch 1168: loss=0.0921, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:47:17.907 INFO: Epoch 1170: loss=0.0922, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:47:39.867 INFO: Epoch 1172: loss=0.0920, RMSE_E=2.8 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:48:01.848 INFO: Epoch 1174: loss=0.0920, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:48:23.819 INFO: Epoch 1176: loss=0.0920, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:48:45.815 INFO: Epoch 1178: loss=0.0922, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:49:07.841 INFO: Epoch 1180: loss=0.0924, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:49:29.869 INFO: Epoch 1182: loss=0.0921, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:49:51.863 INFO: Epoch 1184: loss=0.0917, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:50:14.078 INFO: Epoch 1186: loss=0.0919, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:50:36.042 INFO: Epoch 1188: loss=0.0921, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:50:58.042 INFO: Epoch 1190: loss=0.0914, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:51:20.210 INFO: Epoch 1192: loss=0.0918, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:51:42.270 INFO: Epoch 1194: loss=0.0918, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:52:04.301 INFO: Epoch 1196: loss=0.0916, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:52:26.318 INFO: Epoch 1198: loss=0.0915, RMSE_E=2.8 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:52:48.315 INFO: Epoch 1200: loss=0.0913, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:53:10.563 INFO: Epoch 1202: loss=0.0916, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:53:32.522 INFO: Epoch 1204: loss=0.0913, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:53:54.786 INFO: Epoch 1206: loss=0.0912, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:54:16.967 INFO: Epoch 1208: loss=0.0918, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:54:38.904 INFO: Epoch 1210: loss=0.0919, RMSE_E=2.6 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:55:00.716 INFO: Epoch 1212: loss=0.0918, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:55:22.517 INFO: Epoch 1214: loss=0.0920, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:55:44.293 INFO: Epoch 1216: loss=0.0921, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:56:06.086 INFO: Epoch 1218: loss=0.0917, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:56:27.863 INFO: Epoch 1220: loss=0.0921, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:56:49.642 INFO: Epoch 1222: loss=0.0917, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:57:11.437 INFO: Epoch 1224: loss=0.0913, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:57:33.309 INFO: Epoch 1226: loss=0.0915, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:57:55.332 INFO: Epoch 1228: loss=0.0912, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:58:17.433 INFO: Epoch 1230: loss=0.0915, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:58:39.283 INFO: Epoch 1232: loss=0.0914, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:59:01.322 INFO: Epoch 1234: loss=0.0916, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:59:23.129 INFO: Epoch 1236: loss=0.0915, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 02:59:44.915 INFO: Epoch 1238: loss=0.0919, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:00:06.708 INFO: Epoch 1240: loss=0.0917, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:00:28.506 INFO: Epoch 1242: loss=0.0914, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:00:50.285 INFO: Epoch 1244: loss=0.0915, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:01:12.200 INFO: Epoch 1246: loss=0.0916, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:01:34.126 INFO: Epoch 1248: loss=0.0917, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:01:56.089 INFO: Epoch 1250: loss=0.0913, RMSE_E=2.6 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:02:18.044 INFO: Epoch 1252: loss=0.0912, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:02:40.296 INFO: Epoch 1254: loss=0.0912, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:03:02.597 INFO: Epoch 1256: loss=0.0914, RMSE_E=2.6 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:03:24.590 INFO: Epoch 1258: loss=0.0911, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:03:46.840 INFO: Epoch 1260: loss=0.0911, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:04:09.095 INFO: Epoch 1262: loss=0.0915, RMSE_E=2.6 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:04:31.120 INFO: Epoch 1264: loss=0.0913, RMSE_E=2.6 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:04:53.192 INFO: Epoch 1266: loss=0.0911, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:05:15.182 INFO: Epoch 1268: loss=0.0910, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:05:37.373 INFO: Epoch 1270: loss=0.0915, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:05:59.518 INFO: Epoch 1272: loss=0.0913, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:06:21.635 INFO: Epoch 1274: loss=0.0916, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:06:43.560 INFO: Epoch 1276: loss=0.0915, RMSE_E=2.6 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:07:05.608 INFO: Epoch 1278: loss=0.0917, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:07:27.611 INFO: Epoch 1280: loss=0.0914, RMSE_E=2.6 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:07:49.594 INFO: Epoch 1282: loss=0.0918, RMSE_E=2.6 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:08:11.508 INFO: Epoch 1284: loss=0.0914, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:08:33.493 INFO: Epoch 1286: loss=0.0912, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:08:55.394 INFO: Epoch 1288: loss=0.0910, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:09:17.350 INFO: Epoch 1290: loss=0.0911, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:09:39.327 INFO: Epoch 1292: loss=0.0911, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:10:01.287 INFO: Epoch 1294: loss=0.0914, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:10:23.161 INFO: Epoch 1296: loss=0.0914, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:10:45.187 INFO: Epoch 1298: loss=0.0909, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:11:07.480 INFO: Epoch 1300: loss=0.0910, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:11:29.553 INFO: Epoch 1302: loss=0.0911, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:11:51.600 INFO: Epoch 1304: loss=0.0907, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:12:14.029 INFO: Epoch 1306: loss=0.0911, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:12:36.059 INFO: Epoch 1308: loss=0.0912, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:12:58.059 INFO: Epoch 1310: loss=0.0913, RMSE_E=2.6 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:13:19.948 INFO: Epoch 1312: loss=0.0910, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:13:41.888 INFO: Epoch 1314: loss=0.0912, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:14:03.871 INFO: Epoch 1316: loss=0.0908, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:14:25.848 INFO: Epoch 1318: loss=0.0910, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:14:47.835 INFO: Epoch 1320: loss=0.0916, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:15:09.858 INFO: Epoch 1322: loss=0.0917, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:15:31.828 INFO: Epoch 1324: loss=0.0912, RMSE_E=2.6 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:15:53.784 INFO: Epoch 1326: loss=0.0909, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:16:15.760 INFO: Epoch 1328: loss=0.0909, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:16:37.719 INFO: Epoch 1330: loss=0.0911, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:16:59.719 INFO: Epoch 1332: loss=0.0912, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:17:21.737 INFO: Epoch 1334: loss=0.0910, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:17:43.568 INFO: Epoch 1336: loss=0.0905, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:18:05.583 INFO: Epoch 1338: loss=0.0917, RMSE_E=2.7 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:18:27.379 INFO: Epoch 1340: loss=0.0910, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:18:49.187 INFO: Epoch 1342: loss=0.0907, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:19:11.270 INFO: Epoch 1344: loss=0.0910, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:19:33.255 INFO: Epoch 1346: loss=0.0906, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:19:55.306 INFO: Epoch 1348: loss=0.0905, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:20:17.597 INFO: Epoch 1350: loss=0.0907, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:20:39.589 INFO: Epoch 1352: loss=0.0908, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:21:01.379 INFO: Epoch 1354: loss=0.0910, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:21:23.181 INFO: Epoch 1356: loss=0.0912, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:21:45.055 INFO: Epoch 1358: loss=0.0907, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:22:06.851 INFO: Epoch 1360: loss=0.0906, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:22:28.643 INFO: Epoch 1362: loss=0.0903, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:22:51.074 INFO: Epoch 1364: loss=0.0901, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:23:13.365 INFO: Epoch 1366: loss=0.0899, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:23:35.594 INFO: Epoch 1368: loss=0.0908, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:23:57.607 INFO: Epoch 1370: loss=0.0907, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:24:19.633 INFO: Epoch 1372: loss=0.0907, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:24:41.593 INFO: Epoch 1374: loss=0.0909, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:25:03.492 INFO: Epoch 1376: loss=0.0908, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:25:25.433 INFO: Epoch 1378: loss=0.0904, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:25:47.365 INFO: Epoch 1380: loss=0.0906, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:26:09.297 INFO: Epoch 1382: loss=0.0908, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:26:31.132 INFO: Epoch 1384: loss=0.0915, RMSE_E=2.6 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:26:52.930 INFO: Epoch 1386: loss=0.0908, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:27:14.887 INFO: Epoch 1388: loss=0.0905, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:27:36.678 INFO: Epoch 1390: loss=0.0909, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:27:58.455 INFO: Epoch 1392: loss=0.0903, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:28:20.262 INFO: Epoch 1394: loss=0.0907, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:28:42.054 INFO: Epoch 1396: loss=0.0913, RMSE_E=2.6 meV, RMSE_F=9.6 meV / A
+2025-01-17 03:29:03.864 INFO: Epoch 1398: loss=0.0907, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:29:25.852 INFO: Epoch 1400: loss=0.0906, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:29:47.630 INFO: Epoch 1402: loss=0.0908, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:30:09.529 INFO: Epoch 1404: loss=0.0908, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:30:31.319 INFO: Epoch 1406: loss=0.0909, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:30:53.096 INFO: Epoch 1408: loss=0.0906, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:31:14.923 INFO: Epoch 1410: loss=0.0903, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:31:36.698 INFO: Epoch 1412: loss=0.0904, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:31:58.491 INFO: Epoch 1414: loss=0.0900, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:32:20.418 INFO: Epoch 1416: loss=0.0903, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:32:42.415 INFO: Epoch 1418: loss=0.0907, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:33:04.442 INFO: Epoch 1420: loss=0.0904, RMSE_E=2.7 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:33:26.408 INFO: Epoch 1422: loss=0.0903, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:33:48.354 INFO: Epoch 1424: loss=0.0901, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:34:10.302 INFO: Epoch 1426: loss=0.0903, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:34:32.332 INFO: Epoch 1428: loss=0.0904, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:34:54.370 INFO: Epoch 1430: loss=0.0904, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:35:16.456 INFO: Epoch 1432: loss=0.0905, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:35:38.470 INFO: Epoch 1434: loss=0.0901, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:36:00.458 INFO: Epoch 1436: loss=0.0902, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:36:22.438 INFO: Epoch 1438: loss=0.0902, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:36:44.446 INFO: Epoch 1440: loss=0.0900, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:37:06.406 INFO: Epoch 1442: loss=0.0903, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:37:28.375 INFO: Epoch 1444: loss=0.0902, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:37:50.340 INFO: Epoch 1446: loss=0.0901, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:38:12.315 INFO: Epoch 1448: loss=0.0902, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:38:34.383 INFO: Epoch 1450: loss=0.0901, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:38:56.416 INFO: Epoch 1452: loss=0.0902, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:39:18.478 INFO: Epoch 1454: loss=0.0901, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:39:40.534 INFO: Epoch 1456: loss=0.0900, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:40:02.563 INFO: Epoch 1458: loss=0.0901, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:40:24.614 INFO: Epoch 1460: loss=0.0899, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:40:46.619 INFO: Epoch 1462: loss=0.0902, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:41:08.675 INFO: Epoch 1464: loss=0.0901, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:41:30.491 INFO: Epoch 1466: loss=0.0900, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:41:52.361 INFO: Epoch 1468: loss=0.0900, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:42:14.306 INFO: Epoch 1470: loss=0.0900, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:42:36.230 INFO: Epoch 1472: loss=0.0901, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:42:58.154 INFO: Epoch 1474: loss=0.0901, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:43:20.147 INFO: Epoch 1476: loss=0.0902, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:43:42.109 INFO: Epoch 1478: loss=0.0901, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:44:04.064 INFO: Epoch 1480: loss=0.0901, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:44:26.010 INFO: Epoch 1482: loss=0.0900, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:44:47.954 INFO: Epoch 1484: loss=0.0899, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:45:09.778 INFO: Epoch 1486: loss=0.0899, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:45:31.577 INFO: Epoch 1488: loss=0.0901, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:45:53.387 INFO: Epoch 1490: loss=0.0901, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:46:15.347 INFO: Epoch 1492: loss=0.0902, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:46:37.295 INFO: Epoch 1494: loss=0.0901, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:46:59.247 INFO: Epoch 1496: loss=0.0900, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:47:21.190 INFO: Epoch 1498: loss=0.0900, RMSE_E=2.6 meV, RMSE_F=9.5 meV / A
+2025-01-17 03:47:31.926 INFO: Training complete
+2025-01-17 03:47:31.926 INFO: Computing metrics for training, validation, and test sets
+2025-01-17 03:47:32.893 INFO: Loading checkpoint: checkpoints/3BPA-L2_run-123_epoch-1366.pt
+2025-01-17 03:47:33.056 INFO: Loaded model from epoch 1366
+2025-01-17 03:47:33.057 INFO: Evaluating train ...
+2025-01-17 03:47:37.353 INFO: Evaluating valid ...
+2025-01-17 03:47:37.825 INFO: Evaluating Default ...
+2025-01-17 03:47:56.646 INFO: 
++-------------+--------------+------------------+-------------------+
+| config_type | RMSE E / meV | RMSE F / meV / A | relative F RMSE % |
++-------------+--------------+------------------+-------------------+
+|    train    |     1.5      |       1.4        |        0.15       |
+|    valid    |     2.7      |       9.5        |        0.98       |
+|   Default   |     2.6      |       9.9        |        1.03       |
++-------------+--------------+------------------+-------------------+
+2025-01-17 03:47:56.646 INFO: Saving model to checkpoints/3BPA-L2_run-123.model
+2025-01-17 03:47:57.147 INFO: Compiling model, saving metadata to 3BPA-L2_compiled.model
+2025-01-17 03:47:58.596 INFO: Done
