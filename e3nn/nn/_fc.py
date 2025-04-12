@@ -17,6 +17,13 @@ class _Layer(torch.nn.Module):
     def __init__(self, h_in, h_out, act, var_in, var_out):
         super().__init__()
         self.weight = torch.nn.Parameter(torch.randn(h_in, h_out))
+        # LoRA weights initialization
+        self.LoRA_weight = []
+        self.alpha = 16
+        self.r = 16
+        self.LoRA_weight.append(torch.nn.Parameter(torch.randn(h_in, self.r)))
+        self.LoRA_weight.append(torch.nn.Parameter(torch.zeros(self.r, h_out)))
+        self.LoRA_weight = torch.nn.ParameterList(self.LoRA_weight)
         self.act = act
 
         self.h_in = h_in
@@ -37,16 +44,22 @@ class _Layer(torch.nn.Module):
 
     def forward(self, x: torch.Tensor):
         # - PROFILER - with torch.autograd.profiler.record_function(self._profiling_str):
+        weight = self.weight + self.alpha / self.r * self.LoRA_weight[0] @ self.LoRA_weight[1]
         if self.act is not None:
-            w = self.weight / (self.h_in * self.var_in)**0.5
+            w = weight / (self.h_in * self.var_in)**0.5
             x = x @ w
             x = self.act(x)
             x = x * self.var_out**0.5
         else:
-            w = self.weight / (self.h_in * self.var_in / self.var_out)**0.5
+            w = weight / (self.h_in * self.var_in / self.var_out)**0.5
             x = x @ w
         return x
-
+    
+    def merge_LoRA(self):
+        self.weight.data = self.weight + self.alpha / self.r * self.LoRA_weight[0] @ self.LoRA_weight[1]
+        del self.LoRA_weight
+        del self.alpha
+        del self.r
 
 @compile_mode('script')
 class FullyConnectedNet(torch.nn.Sequential):
