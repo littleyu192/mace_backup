@@ -315,6 +315,11 @@ def take_step(
     max_grad_norm: Optional[float],
     device: torch.device,
 ) -> Tuple[float, Dict[str, Any]]:
+    for name, param in model.named_parameters():
+        if "readouts" in name:
+            param.requires_grad = True
+        else:
+            param.requires_grad = False
     start_time = time.time()
     batch = batch.to(device)
     optimizer.zero_grad(set_to_none=True)

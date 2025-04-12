@@ -522,6 +522,11 @@ def run(args: argparse.Namespace) -> None:
             max_L=args.max_L,
         )
     model.to(device)
+    param_size = 0
+    for name, param in model.named_parameters():
+        if "readouts" in name:
+            param_size += param.numel()
+    logging.info(f"Number of trainable parameters: {param_size}")
 
     # Optimizer
     decay_interactions = {}
