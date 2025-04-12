@@ -151,6 +151,13 @@ class Contraction(torch.nn.Module):
                     torch.randn((num_elements, num_params, self.num_features))
                     / num_params
                 )
+                # LoRA weights initialization
+                self.LoRA_weight = []
+                self.alpha = 16
+                self.r = 16
+                self.LoRA_weight.append(torch.nn.Parameter(torch.randn(num_elements, num_params, self.r) / num_params))
+                self.LoRA_weight.append(torch.nn.Parameter(torch.zeros(self.r, self.num_features)))
+                self.LoRA_weight = torch.nn.ParameterList(self.LoRA_weight)
                 self.weights_max = w
             else:
                 # Generate optimized contractions equations
@@ -212,7 +219,7 @@ class Contraction(torch.nn.Module):
     def forward(self, x: torch.Tensor, y: torch.Tensor):
         out = self.graph_opt_main(
             self.U_tensors(self.correlation),
-            self.weights_max,
+            self.weights_max + self.alpha / self.r * self.LoRA_weight[0] @ self.LoRA_weight[1],
             x,
             y,
         )
@@ -231,3 +238,9 @@ class Contraction(torch.nn.Module):
 
     def U_tensors(self, nu: int):
         return dict(self.named_buffers())[f"U_matrix_{nu}"]
+    
+    def merge_LoRA(self):
+        self.weights_max.data = self.weights_max + self.alpha / self.r * self.LoRA_weight[0] @ self.LoRA_weight[1]
+        del self.LoRA_weight
+        del self.alpha
+        del self.r

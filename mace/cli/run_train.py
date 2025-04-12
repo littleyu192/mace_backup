@@ -522,7 +522,11 @@ def run(args: argparse.Namespace) -> None:
             max_L=args.max_L,
         )
     model.to(device)
-
+    param_size = 0
+    for name, param in model.named_parameters():
+        if "LoRA" in name or "radial_embedding" in name or ("symmetric_contractions" in name and "weights_max" not in name):
+            param_size += param.numel()
+    logging.info(f"Number of trainable parameters: {param_size}")
     # Optimizer
     decay_interactions = {}
     no_decay_interactions = {}
@@ -826,6 +830,11 @@ def run(args: argparse.Namespace) -> None:
             }
             if swa_eval:
                 torch.save(model, Path(args.model_dir) / (args.name + "_swa.model"))
+                model_copy = deepcopy(model)
+                for name, module in model_copy.named_modules():
+                    if hasattr(module, "merge_LoRA"):
+                        module.merge_LoRA()
+                torch.save(model_copy, Path(args.model_dir) / (args.name + "_swa_merge.model"))
                 try:
                     path_complied = Path(args.model_dir) / (
                         args.name + "_swa_compiled.model"
@@ -841,6 +850,11 @@ def run(args: argparse.Namespace) -> None:
                     pass
             else:
                 torch.save(model, Path(args.model_dir) / (args.name + ".model"))
+                model_copy = deepcopy(model)
+                for name, module in model_copy.named_modules():
+                    if hasattr(module, "merge_LoRA"):
+                        module.merge_LoRA()
+                torch.save(model_copy, Path(args.model_dir) / (args.name + "_merge.model"))
                 try:
                     path_complied = Path(args.model_dir) / (
                         args.name + "_compiled.model"
