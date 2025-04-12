@@ -32,6 +32,26 @@ from .symmetric_contraction import SymmetricContraction
 
 
 @compile_mode("script")
+class AdapterBlock(torch.nn.Module):
+    def __init__(self, irreps_in: o3.Irreps):
+        super().__init__()
+        irreps_in = o3.Irreps(irreps_in)
+        self.linear_1 = torch.nn.Linear(irreps_in.dim, irreps_in.dim // 16)
+        self.linear_2 = torch.nn.Linear(irreps_in.dim // 16, irreps_in.dim)
+        self.relu = torch.nn.ReLU()
+
+    def forward(
+        self,
+        x: torch.Tensor,
+    ) -> torch.Tensor:
+        residual = x
+        x = self.linear_1(x)
+        x = self.relu(x)
+        x = self.linear_2(x)
+        return x + residual
+
+
+@compile_mode("script")
 class LinearNodeEmbeddingBlock(torch.nn.Module):
     def __init__(self, irreps_in: o3.Irreps, irreps_out: o3.Irreps):
         super().__init__()

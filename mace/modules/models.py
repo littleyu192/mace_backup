@@ -16,6 +16,7 @@ from mace.modules.radial import ZBLBasis
 from mace.tools.scatter import scatter_sum
 
 from .blocks import (
+    AdapterBlock,
     AtomicEnergiesBlock,
     EquivariantProductBasisBlock,
     InteractionBlock,
@@ -128,10 +129,12 @@ class MACE(torch.nn.Module):
             num_elements=num_elements,
             use_sc=use_sc_first,
         )
+        adapter = AdapterBlock(irreps_in = hidden_irreps)
         self.products = torch.nn.ModuleList([prod])
 
         self.readouts = torch.nn.ModuleList()
         self.readouts.append(LinearReadoutBlock(hidden_irreps))
+        self.adapters = torch.nn.ModuleList([adapter])
 
         for i in range(num_interactions - 1):
             if i == num_interactions - 2:
@@ -159,6 +162,10 @@ class MACE(torch.nn.Module):
                 use_sc=True,
             )
             self.products.append(prod)
+            adapter = AdapterBlock(
+                irreps_in = hidden_irreps_out,
+            )
+            self.adapters.append(adapter)
             if i == num_interactions - 2:
                 self.readouts.append(
                     NonLinearReadoutBlock(hidden_irreps_out, MLP_irreps, gate)
@@ -229,8 +236,8 @@ class MACE(torch.nn.Module):
         energies = [e0, pair_energy]
         node_energies_list = [node_e0, pair_node_energy]
         node_feats_list = []
-        for interaction, product, readout in zip(
-            self.interactions, self.products, self.readouts
+        for interaction, product, adapter, readout in zip(
+            self.interactions, self.products, self.adapters, self.readouts
         ):
             node_feats, sc = interaction(
                 node_attrs=data["node_attrs"],
@@ -244,6 +251,7 @@ class MACE(torch.nn.Module):
                 sc=sc,
                 node_attrs=data["node_attrs"],
             )
+            node_feats = adapter(node_feats)
             node_feats_list.append(node_feats)
             node_energies = readout(node_feats).squeeze(-1)  # [n_nodes, ]
             energy = scatter_sum(
@@ -356,8 +364,8 @@ class ScaleShiftMACE(MACE):
         # Interactions
         node_es_list = [pair_node_energy]
         node_feats_list = []
-        for interaction, product, readout in zip(
-            self.interactions, self.products, self.readouts
+        for interaction, product, adapter, readout in zip(
+            self.interactions, self.products, self.adapters, self.readouts
         ):
             node_feats, sc = interaction(
                 node_attrs=data["node_attrs"],
@@ -369,6 +377,7 @@ class ScaleShiftMACE(MACE):
             node_feats = product(
                 node_feats=node_feats, sc=sc, node_attrs=data["node_attrs"]
             )
+            node_feats = adapter(node_feats)
             node_feats_list.append(node_feats)
             node_es_list.append(readout(node_feats).squeeze(-1))  # {[n_nodes, ], }
         # Concatenate node features
