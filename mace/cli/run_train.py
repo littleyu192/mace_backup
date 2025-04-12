@@ -291,6 +291,10 @@ def run(args: argparse.Namespace) -> None:
         loss_fn = modules.WeightedEnergyForcesLoss(
             energy_weight=args.energy_weight, forces_weight=args.forces_weight
         )
+    elif args.loss == "ef":
+        loss_fn = modules.EnergyForcesLoss(
+            energy_weight=args.energy_weight, forces_weight=args.forces_weight
+        )
     elif args.loss == "forces_only":
         loss_fn = modules.WeightedForcesLoss(forces_weight=args.forces_weight)
     elif args.loss == "virials":

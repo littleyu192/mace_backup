@@ -21,6 +21,7 @@ from .blocks import (
     ScaleShiftBlock,
 )
 from .loss import (
+    EnergyForcesLoss,
     DipoleSingleLoss,
     UniversalLoss,
     WeightedEnergyForcesDipoleLoss,
