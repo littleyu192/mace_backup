@@ -148,6 +148,11 @@ class Trainer:
         """
         if is_train:
             self.model.train()
+            for name, param in self.model.named_parameters():
+                if "LoRA" in name or "edge_embedding" in name or "onehot" in name:
+                    param.requires_grad = True
+                else:
+                    param.requires_grad = False
         else:
             self.model.eval()
 
