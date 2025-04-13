@@ -148,6 +148,11 @@ class Trainer:
         """
         if is_train:
             self.model.train()
+            for name, param in self.model.named_parameters():
+                if "adapter" in name or "reduce_input_to_hidden" in name or "reduce_hidden_to_energy" in name:
+                    param.requires_grad = True
+                else:
+                    param.requires_grad = False
         else:
             self.model.eval()
 

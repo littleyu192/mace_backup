@@ -116,3 +116,24 @@ class FCN_e3nn(nn.Module):
     def forward(self, data: AtomGraphDataType) -> AtomGraphDataType:
         data[self.key_output] = self.fcn(data[self.key_input])
         return data
+
+
+@compile_mode('script')
+class AdapterBlock(torch.nn.Module):
+    def __init__(self, irreps_in: Irreps):
+        super().__init__()
+        self.linear_1 = torch.nn.Linear(irreps_in.dim, irreps_in.dim // 8)
+        self.linear_2 = torch.nn.Linear(irreps_in.dim // 8, irreps_in.dim)
+        self.relu = torch.nn.ReLU()
+
+    def forward(
+        self,
+        data: AtomGraphDataType,
+    ) -> AtomGraphDataType:
+        x = data[KEY.NODE_FEATURE]
+        residual = x
+        x = self.linear_1(x)
+        x = self.relu(x)
+        x = self.linear_2(x)
+        data[KEY.NODE_FEATURE] = x + residual
+        return data

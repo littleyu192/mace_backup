@@ -17,7 +17,7 @@ from .nn.edge_embedding import (
 )
 from .nn.force_output import ForceStressOutputFromEdge
 from .nn.interaction_blocks import NequIP_interaction_block
-from .nn.linear import AtomReduce, FCN_e3nn, IrrepsLinear
+from .nn.linear import AtomReduce, FCN_e3nn, IrrepsLinear, AdapterBlock
 from .nn.node_embedding import OnehotEmbedding
 from .nn.scale import Rescale, SpeciesWiseRescale
 from .nn.self_connection import (
@@ -379,6 +379,13 @@ def build_E3_equivariant_model(config: dict, parallel=False):
             }
         )
         layers.update(interaction_builder(**param_interaction_block))
+        layers.update(
+            {
+                f'{t}_adapter': AdapterBlock(
+                    irreps_in=irreps_out,
+                ),
+            }
+        )
         irreps_x = irreps_out
 
     layers.update(init_feature_reduce(config, irreps_x))
