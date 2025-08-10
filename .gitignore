@@ -1,0 +1,12 @@
+# 忽略根目录下的 build 目录
+/build/
+
+# 忽略所有以 egg-info 结尾的目录
+**/*egg-info/
+
+# 忽略根目录下的 tasks 目录
+/tasks/
+
+# 忽略 PACE 目录下所有含 3bpa,acac 的文件和目录（递归匹配）
+PACE/**/*3bpa*
+PACE/**/*acac*
