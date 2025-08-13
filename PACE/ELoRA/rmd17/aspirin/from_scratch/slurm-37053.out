@@ -1,0 +1,48 @@
+2025-07-21 13:54:55.298 INFO: Configuration: Namespace(Train=True, batch_size=5, continue_run=False, cutoff=5.0, device=0, edge_emb='radial', energy_weight=9.0, epochs=6, eval_interval=2, examples=20, force_weight=1000.0, hidden='256x0e + 256x1o + 256x2e + 256x3o', lr=0.01, lr_factor=0.8, model='pace', num_bessel=6, output_dir='./results/pace/aspirin2_10000_5', patience=1000, scheduler_patience=100, seed=3, split=1, task='aspirin', val_batch_size=15)
+Processing...
+./example/aspirin/aspirin/data/train.xyz
+10000
+  0%|          | 0/10000 [00:00<?, ?it/s] 14%|█▍        | 1449/10000 [00:00<00:00, 14489.25it/s] 56%|█████▌    | 5552/10000 [00:00<00:00, 30100.55it/s] 98%|█████████▊| 9765/10000 [00:00<00:00, 27659.62it/s]100%|██████████| 10000/10000 [00:00<00:00, 27134.15it/s]
+Done!
+Processing...
+Saving...
+./example/aspirin/aspirin/data/valid.xyz
+50
+  0%|          | 0/50 [00:00<?, ?it/s]100%|██████████| 50/50 [00:00<00:00, 37895.77it/s]
+Done!
+Processing...
+Done!
+Processing...
+Done!
+Processing...
+Saving...
+./example/aspirin/aspirin/data/test.xyz
+9000
+  0%|          | 0/9000 [00:00<?, ?it/s] 45%|████▍     | 4016/9000 [00:00<00:00, 40150.56it/s] 89%|████████▉ | 8032/9000 [00:00<00:00, 27133.89it/s]100%|██████████| 9000/9000 [00:00<00:00, 29602.14it/s]Saving...
+2025-07-21 13:55:11.312 INFO: Statistics: {'z_table': [1, 6, 8], 'average_energy': tensor(-17617.7227), 'avg_num_neighbors': tensor(14.3844), 'std': 1.2692335844039917, 'mean': -2.0275279894121923e-05}
+node_attr_irreps.shape:  3x0e
+node_feats_irreps.shape:  256x0e
+sh_irreps.shape:  1x0e+1x1o+1x2e+1x3o
+edge_booster_irreps.shape:  256x0e+256x1o+256x2e+256x3o
+edge_feats_irreps.shape:  6x0e
+interaction_irreps.shape:  256x0e+256x1o+256x2e+256x3o
+hidden_irreps.shape:  256x0e+256x1o+256x2e+256x3o
+2025-07-21 13:55:17.053 INFO: Number of parameters: 3873440
+2025-07-21 13:55:17.056 INFO: Started training
+
+Done!
+Processing...
+Done!
+2025-07-21 14:00:15.303 INFO: Epoch 0: loss=1.3568, MAE_E=15.20 meV, MAE_F=25.55 meV / A, lr_cur=0.01000
+2025-07-21 14:08:57.342 INFO: Epoch 2: loss=0.6895, MAE_E=19.88 meV, MAE_F=18.38 meV / A, lr_cur=0.01000
+2025-07-21 14:17:40.848 INFO: Epoch 4: loss=0.6093, MAE_E=7.34 meV, MAE_F=17.39 meV / A, lr_cur=0.01000
+2025-07-21 14:22:02.896 INFO: Computing metrics for training, validation, and test sets
+2025-07-21 14:22:03.064 INFO: Loaded model from epoch 5
+2025-07-21 14:30:47.842 INFO: 
++-------------+-------------+-----------------+
+| config_type | MAE E / meV | MAE F / meV / A |
++-------------+-------------+-----------------+
+|    Train    |     8.08    |       8.44      |
+|  Validation |     9.06    |      17.20      |
+|     Test    |     9.43    |      17.72      |
++-------------+-------------+-----------------+

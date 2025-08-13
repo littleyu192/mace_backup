@@ -1,172 +1,142 @@
-# MACE pretrained model
+
+
+# PACE
 
 ## Requirements:
 
-Python >= 3.7;
+Python >= 3.8;
 
-PyTorch >= 1.12 (training with float64 is not supported with PyTorch 2.1 but is supported with 2.2 and later.).
+PyTorch >= 1.11 .
 
 ## Baseline (Full Training / Full Parameter Fine-tuning)
 
-Use the code from the [`husiyu/PACE_baseline`](https://github.com/ACEsuit/mace) branch. 
-
-
-
-
-
-
-
-
-
+Use the code from the [`husiyu/PACE_baseline`](https://github.com/divelab/AIRS/tree/main/OpenMol/PACE) branch, This branch is based on commit [dd0a772](https://github.com/divelab/AIRS/commit/dd0a772e90730719855e0ce3993d2489cb274b70) from [AIRS/OpenMol/PACE](https://github.com/divelab/AIRS/tree/main/OpenMol/PACE) .
 
 **Usage**:  
-Install dependencies according to the README's Installation section, then install the MACE library from the [`wangchen/MACE_baseline`]（https://github.com/littleyu192/mace_backup/tree/wangchen/MACE_baseline） branch source code.
+Install dependencies according to the README's Installation section, then install the PACE library from the [`husiyu/PACE_baseline`](https://github.com/divelab/AIRS/tree/main/OpenMol/PACE) branch source code.
 
 ```
 # Create conda environment and activate
-conda create --name mace_baseline
-conda activate mace_baseline
+conda create --name pace_baseline python=3.8
+conda activate pace_baseline
 
 # Install PyTorch
-conda install pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
+conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=11.3 -c pytorch
 
-# (optional) Install MACE's dependencies from Conda as well
-conda install numpy scipy matplotlib ase opt_einsum prettytable pandas e3nn
+# (optional) Install PACE's dependencies from Conda as well
+conda install numpy scipy matplotlib ase opt_einsum prettytable pandas e3nn 
 
-# Clone and install MACE (and all required packages)
-pip install git+https://github.com/littleyu192/mace_backup@wangchen/MACE_baseline
+# install the requirements
+pip install e3nn torch-ema prettytable ase==3.22.1
+
+# Clone and install PACE (and all required packages)
+pip install git+https://github.com/littleyu192/mace_backup@husiyu/PACE_baseline
 ```
 ## E3nn LoRA
 
-Use the code from the [`wangchen/MACE_ELoRA`](https://github.com/littleyu192/mace_backup/tree/wangchen/MACE_ELoRA) branch. This branch adds ELoRA (Efficient Low-Rank Adaptation) to `wangchen/MACE_baseline`.
+Use the code from the [`zhujie/PACE_LoRA`](https://github.com/littleyu192/mace_backup/tree/zhujie/PACE_LoRA) branch. This branch adds ELoRA (Efficient Low-Rank Adaptation) to `husiyu/PACE_baseline`.
 
 **Usage**:  
 1. Install dependencies according to the standard Installation instructions (**excluding e3nn**)  
 2. **Install modified e3nn with ELoRA support**  
-3. Install MACE from the `MACE_ELoRA` branch source code
+3. Install PACE from the `PACE_LoRA` branch source code
 
 ```
 # Create conda environment and activate
-conda create -n mace_elora python=3.10
-conda activate mace_elora
+conda create -n pace_lora python=3.8
+conda activate pace_lora
 
 # Install PyTorch
-conda install pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
+conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=11.3 -c pytorch
 
-# (optional) Install MACE's dependencies from Conda as well
+# (optional) Install PACE's dependencies from Conda as well
 conda install numpy scipy matplotlib ase opt_einsum prettytable pandas
+
+# install the requirements
+pip install e3nn torch-ema prettytable ase==3.22.1
 
 # Clone and install e3nn with ELoRA
 pip install git+https://github.com/littleyu192/mace_backup@wangchen/e3nn
 
-# Clone and install MACE with ELoRA (and all required packages)
-pip install git+https://github.com/littleyu192/mace_backup@wangchen/MACE_ELoRA
+# Clone and install PACE (and all required packages)
+pip install git+https://github.com/littleyu192/mace_backup@zhujie/PACE_lora
+
 ```
 
 ## Adapter
 
-Use the code from the [`wangchen/MACE_adapter`](https://github.com/littleyu192/mace_backup/tree/wangchen/MACE_adapter) branch. This branch adds Adapter modules to `MACE_baseline`.
+Use the code from the [`husiyu/PACE_adapter`](https://github.com/divelab/AIRS/tree/main/OpenMol/PACE) branch. This branch adds Adapter modules to `PACE_baseline`.
 
 **Usage**:  
-Install dependencies according to the standard Installation instructions, then install MACE from the `MACE_adapter` branch source code.
+Install dependencies according to the standard Installation instructions, then install PACE from the `PACE_adapter` branch source code.
 
 ---
 
 ## Readout
 
-Use the code from the [`wangchen/MACE_readout`](https://github.com/littleyu192/mace_backup/tree/wangchen/MACE_readout) branch. This branch modifies `MACE_baseline` to make **only the readout layers trainable**.
+Use the code from the [`husiyu/PACE_readout`](https://github.com/divelab/AIRS/tree/main/OpenMol/PACE) branch. This branch modifies `PACE_baseline` to make **only the readout layers trainable**.
 
 **Usage**:  
-Install dependencies per the standard Installation instructions, then install MACE from the `MACE_readout` branch source code.
+Install dependencies per the standard Installation instructions, then install PACE from the `PACE_readout` branch source code.
 
 ---
 
 ## Training
-Baseline and ELoRA share the same command-line interface and training scripts. To reproduce different results, simply switch the active conda environment (e.g., mace_baseline or mace_elora) before running the training commands.
+Baseline and LoRA share the same command-line interface and training scripts. To reproduce different results, simply switch the active conda environment (e.g., pace_baseline or pace_lora) before running the training commands.
 
-Inorganic dataset:
+```bash
+module load conda/3-2020.07 cudnn/12 gcc/11.4.0
+source activate pace
+
+python main_rmd17.py --device $DEVICE --task task_name --output_dir ./results/pace/aspirin --num_bessel 6
 ```
-mace_run_train \
-    --name="MACE_model" \
-    --train_file="./dataset/train.xyz" \
-    --valid_file="./dataset/valid.xyz" \
-    --E0s="average" \
-    --foundation_model="2024-01-07-mace-128-L2_epoch-199.model" \
-    --model="ScaleShiftMACE" \
-    --interaction_first="RealAgnosticResidualInteractionBlock" \
-    --interaction="RealAgnosticResidualInteractionBlock" \
-    --num_interactions=2 \
-    --correlation=3 \
-    --max_ell=3 \
-    --r_max=6.0 \
-    --max_L=2 \
-    --num_channels=128 \
-    --num_radial_basis=10 \
-    --MLP_irreps="16x0e" \
-    --scaling='rms_forces_scaling' \
-    --loss="ef" \
-    --energy_weight=1 \
-    --forces_weight=1000 \
-    --amsgrad \
-    --lr=0.005 \
-    --weight_decay=1e-8 \
-    --batch_size=5 \
-    --valid_batch_size=5 \
-    --lr_factor=0.8 \
-    --scheduler_patience=5 \
-    --ema \
-    --ema_decay=0.995 \
-    --max_num_epochs=200 \
-    --error_table="TotalRMSE" \
-    --device=cuda \
-    --seed=123 \
-    --clip_grad=100 \
-    --save_cpu 
+
+task_name is the task name, which is the name of each folder under the example folder, such as aspirin, aspirin_dft, Azobenzene, Benzene...
+
+In addition, you need to change the raw_file_names function (about line 40) in the ./PACE/dataset/PygMD17.py file, whose output is the corresponding input file path;
+
+The root of the train_dataset/valid_dataset/test_dataset in the main_rmd17~.py file is the path where the data files are stored or loaded.
+
+LORA：
+```bash
+module load conda/3-2020.07 cudnn/12 gcc/11.4.0
+source activate pace_lora
+
+python main_rmd17_lora.py --device $DEVICE --task task_name --output_dir ./results/pace/aspirin --num_bessel 6  --continue_run
 ```
-Organic dataset:
-```
-mace_run_train \
-    --name="MACE_model" \
-    --train_file="./dataset/train.xyz" \
-    --valid_fraction=0.1 \
-    --test_file="./dataset/test.xyz" \
-    --E0s='average' \
-    --foundation_model="MACE-OFF23_medium.model" \
-    --model="MACE" \
-    --loss="ef" \
-    --num_interactions=2 \
-    --num_channels=128 \
-    --max_L=1 \
-    --correlation=3 \
-    --r_max=5.0 \
-    --lr=0.005 \
-    --forces_weight=1000 \
-    --energy_weight=1 \
-    --weight_decay=1e-8 \
-    --clip_grad=100 \
-    --batch_size=5 \
-    --valid_batch_size=5 \
-    --max_num_epochs=500 \
-    --scheduler_patience=5 \
-    --ema \
-    --ema_decay=0.995 \
-    --error_table="TotalRMSE" \
-    --default_dtype="float64"\
-    --device=cuda \
-    --seed=123 \
-    --save_cpu 
-```
+
+You also need to modify the checkpoint path (line 200 of main_rmd17_lora.py)
 
 ## Important Notes
 
-1. For `MACE_baseline`, `MACE_adapter`, and `MACE_readout`: Use the **[official e3nn library](https://github.com/e3nn/e3nn)**  
-2. For `MACE_ELoRA`: Use the **[modified e3nn](https://github.com/e3nn/e3nn/tree/ELoRA_branch)** version  
-3. **No script modifications needed** for different fine-tuning approaches - just switch environments  
-4. **Inorganic dataset fine-tuning**: Use pre-trained model [2024-01-07-mace-128-L2_epoch-199.model](https://github.com/ACEsuit/mace-foundations/releases/download/mace_mp_0/2024-01-07-mace-128-L2_epoch-199.model)  
-5. **Organic dataset fine-tuning**: Use pre-trained model [MACE-OFF23_medium.model](https://github.com/ACEsuit/mace-off/blob/main/mace_off23/MACE-OFF23_medium.model)  
 
 ---
 
 ## Reference
 
 [1] Batatia, Ilyes, et al. "MACE: Higher order equivariant message passing neural networks for fast and accurate force fields." *Advances in neural information processing systems* 35 (2022): 11423-11436.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

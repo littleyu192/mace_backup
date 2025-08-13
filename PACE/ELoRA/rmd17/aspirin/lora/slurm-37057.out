@@ -1,0 +1,319 @@
+2025-07-21 14:31:41.592 INFO: Configuration: Namespace(Train=True, batch_size=5, continue_run=True, cutoff=5.0, device=0, edge_emb='radial', energy_weight=9.0, epochs=200, eval_interval=2, examples=20, force_weight=1000.0, hidden='256x0e + 256x1o + 256x2e + 256x3o', lr=0.0001, lr_factor=0.8, model='pace', num_bessel=6, output_dir='./results/pace_lora/aspirin_10000_5', patience=1000, scheduler_patience=100, seed=3, split=1, task='aspirin', val_batch_size=15)
+2025-07-21 14:31:46.979 INFO: Statistics: {'z_table': [1, 6, 8], 'average_energy': tensor(-17617.7363), 'avg_num_neighbors': tensor(14.3086), 'std': 1.2726411819458008, 'mean': 4.464283483684994e-05}
+node_attr_irreps.shape:  3x0e
+node_feats_irreps.shape:  256x0e
+sh_irreps.shape:  1x0e+1x1o+1x2e+1x3o
+edge_booster_irreps.shape:  256x0e+256x1o+256x2e+256x3o
+edge_feats_irreps.shape:  6x0e
+interaction_irreps.shape:  256x0e+256x1o+256x2e+256x3o
+hidden_irreps.shape:  256x0e+256x1o+256x2e+256x3o
+2025-07-21 14:31:53.182 INFO: Number of parameters: 4524432
+
+进行微调：
+
+✅ 成功加载部分优化器状态
+Param shape: torch.Size([768]), requires_grad: True
+Param shape: torch.Size([3, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([128, 6]), requires_grad: True
+Param shape: torch.Size([128, 128]), requires_grad: True
+Param shape: torch.Size([128]), requires_grad: True
+Param shape: torch.Size([128]), requires_grad: True
+Param shape: torch.Size([6, 64]), requires_grad: True
+Param shape: torch.Size([6, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 64]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 64]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 512]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 512]), requires_grad: True
+Param shape: torch.Size([6, 64]), requires_grad: True
+Param shape: torch.Size([6, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 64]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 64]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 2944]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 2944]), requires_grad: True
+Param shape: torch.Size([6, 64]), requires_grad: True
+Param shape: torch.Size([6, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 64]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 64]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 2944]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 2944]), requires_grad: True
+Param shape: torch.Size([6, 64]), requires_grad: True
+Param shape: torch.Size([6, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 64]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 64]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 1024]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 1024]), requires_grad: True
+Param shape: torch.Size([6, 64]), requires_grad: True
+Param shape: torch.Size([6, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 64]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 64]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 1024]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 1024]), requires_grad: True
+Param shape: torch.Size([196608]), requires_grad: True
+Param shape: torch.Size([768, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([6, 64]), requires_grad: True
+Param shape: torch.Size([6, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 64]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 64]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 5888]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 5888]), requires_grad: True
+Param shape: torch.Size([6, 64]), requires_grad: True
+Param shape: torch.Size([6, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 64]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 64]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 64]), requires_grad: True
+Param shape: torch.Size([64, 5888]), requires_grad: True
+Param shape: torch.Size([64, 16]), requires_grad: True
+Param shape: torch.Size([16, 5888]), requires_grad: True
+Param shape: torch.Size([196608]), requires_grad: True
+Param shape: torch.Size([768, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([262144]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([262144]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([262144]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([3, 23, 256]), requires_grad: True
+Param shape: torch.Size([3, 4, 256]), requires_grad: True
+Param shape: torch.Size([3, 1, 256]), requires_grad: True
+Param shape: torch.Size([3, 51, 256]), requires_grad: True
+Param shape: torch.Size([3, 6, 256]), requires_grad: True
+Param shape: torch.Size([3, 1, 256]), requires_grad: True
+Param shape: torch.Size([3, 65, 256]), requires_grad: True
+Param shape: torch.Size([3, 7, 256]), requires_grad: True
+Param shape: torch.Size([3, 1, 256]), requires_grad: True
+Param shape: torch.Size([3, 65, 256]), requires_grad: True
+Param shape: torch.Size([3, 6, 256]), requires_grad: True
+Param shape: torch.Size([3, 1, 256]), requires_grad: True
+Param shape: torch.Size([262144]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([262144]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([262144]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([262144]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([3, 23, 256]), requires_grad: True
+Param shape: torch.Size([3, 4, 256]), requires_grad: True
+Param shape: torch.Size([3, 1, 256]), requires_grad: True
+Param shape: torch.Size([65536]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 256]), requires_grad: True
+Param shape: torch.Size([4096]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 16]), requires_grad: True
+Param shape: torch.Size([16]), requires_grad: True
+Param shape: torch.Size([16, 16]), requires_grad: True
+Param shape: torch.Size([16, 1]), requires_grad: True
+Param shape: torch.Size([4096]), requires_grad: True
+Param shape: torch.Size([256, 16]), requires_grad: True
+Param shape: torch.Size([16, 16]), requires_grad: True
+Param shape: torch.Size([16]), requires_grad: True
+Param shape: torch.Size([16, 16]), requires_grad: True
+Param shape: torch.Size([16, 1]), requires_grad: True
+2025-07-21 14:31:53.367 INFO: Loaded model from epoch 5 from ./results/pace_lora/aspirin_10000_5
+2025-07-21 14:31:53.371 INFO: Started training
+Processing...
+Done!
+Processing...
+Done!
+Processing...
+Done!
+2025-07-21 14:32:45.061 INFO: Epoch 6: loss=0.7471, MAE_E=8.11 meV, MAE_F=18.36 meV / A, lr_cur=0.00010
+2025-07-21 14:32:58.607 INFO: Epoch 8: loss=0.6969, MAE_E=11.42 meV, MAE_F=17.59 meV / A, lr_cur=0.00010
+2025-07-21 14:33:12.194 INFO: Epoch 10: loss=0.6934, MAE_E=8.85 meV, MAE_F=17.48 meV / A, lr_cur=0.00010
+2025-07-21 14:33:26.000 INFO: Epoch 12: loss=0.6940, MAE_E=27.28 meV, MAE_F=17.52 meV / A, lr_cur=0.00010
+2025-07-21 14:33:39.624 INFO: Epoch 14: loss=0.6922, MAE_E=12.66 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:33:53.210 INFO: Epoch 16: loss=0.6933, MAE_E=7.71 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:34:06.761 INFO: Epoch 18: loss=0.6924, MAE_E=8.84 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:34:20.456 INFO: Epoch 20: loss=0.6894, MAE_E=14.46 meV, MAE_F=17.44 meV / A, lr_cur=0.00010
+2025-07-21 14:34:34.201 INFO: Epoch 22: loss=0.6906, MAE_E=11.32 meV, MAE_F=17.44 meV / A, lr_cur=0.00010
+2025-07-21 14:34:47.853 INFO: Epoch 24: loss=0.6943, MAE_E=7.63 meV, MAE_F=17.48 meV / A, lr_cur=0.00010
+2025-07-21 14:35:01.526 INFO: Epoch 26: loss=0.6941, MAE_E=8.26 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:35:15.301 INFO: Epoch 28: loss=0.6921, MAE_E=9.50 meV, MAE_F=17.45 meV / A, lr_cur=0.00010
+2025-07-21 14:35:28.983 INFO: Epoch 30: loss=0.6919, MAE_E=10.03 meV, MAE_F=17.45 meV / A, lr_cur=0.00010
+2025-07-21 14:35:42.835 INFO: Epoch 32: loss=0.6938, MAE_E=7.52 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:35:56.584 INFO: Epoch 34: loss=0.6945, MAE_E=7.83 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:36:10.134 INFO: Epoch 36: loss=0.6947, MAE_E=10.81 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:36:23.756 INFO: Epoch 38: loss=0.6938, MAE_E=7.85 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:36:37.230 INFO: Epoch 40: loss=0.6920, MAE_E=7.41 meV, MAE_F=17.45 meV / A, lr_cur=0.00010
+2025-07-21 14:36:50.744 INFO: Epoch 42: loss=0.6942, MAE_E=7.40 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:37:04.326 INFO: Epoch 44: loss=0.6938, MAE_E=7.59 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:37:18.197 INFO: Epoch 46: loss=0.6934, MAE_E=7.52 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:37:31.765 INFO: Epoch 48: loss=0.6942, MAE_E=7.47 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:37:45.168 INFO: Epoch 50: loss=0.6945, MAE_E=7.49 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:37:58.716 INFO: Epoch 52: loss=0.6945, MAE_E=7.45 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:38:12.437 INFO: Epoch 54: loss=0.6949, MAE_E=7.45 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:38:26.145 INFO: Epoch 56: loss=0.6950, MAE_E=7.77 meV, MAE_F=17.48 meV / A, lr_cur=0.00010
+2025-07-21 14:38:39.658 INFO: Epoch 58: loss=0.6946, MAE_E=7.62 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:38:53.255 INFO: Epoch 60: loss=0.6948, MAE_E=7.78 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:39:06.658 INFO: Epoch 62: loss=0.6937, MAE_E=7.66 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:39:20.200 INFO: Epoch 64: loss=0.6931, MAE_E=7.73 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:39:33.834 INFO: Epoch 66: loss=0.6932, MAE_E=7.32 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:39:47.415 INFO: Epoch 68: loss=0.6931, MAE_E=7.63 meV, MAE_F=17.45 meV / A, lr_cur=0.00010
+2025-07-21 14:40:01.007 INFO: Epoch 70: loss=0.6930, MAE_E=7.42 meV, MAE_F=17.45 meV / A, lr_cur=0.00010
+2025-07-21 14:40:14.468 INFO: Epoch 72: loss=0.6933, MAE_E=7.69 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:40:28.105 INFO: Epoch 74: loss=0.6945, MAE_E=7.74 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:40:41.723 INFO: Epoch 76: loss=0.6936, MAE_E=7.56 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:40:55.222 INFO: Epoch 78: loss=0.6934, MAE_E=7.45 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:41:08.741 INFO: Epoch 80: loss=0.6936, MAE_E=7.35 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:41:22.387 INFO: Epoch 82: loss=0.6947, MAE_E=7.30 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:41:36.011 INFO: Epoch 84: loss=0.6947, MAE_E=7.39 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:41:49.682 INFO: Epoch 86: loss=0.6935, MAE_E=7.61 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:42:03.311 INFO: Epoch 88: loss=0.6930, MAE_E=7.84 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:42:16.878 INFO: Epoch 90: loss=0.6927, MAE_E=7.33 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:42:30.405 INFO: Epoch 92: loss=0.6925, MAE_E=7.40 meV, MAE_F=17.45 meV / A, lr_cur=0.00010
+2025-07-21 14:42:43.947 INFO: Epoch 94: loss=0.6928, MAE_E=7.41 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:42:57.605 INFO: Epoch 96: loss=0.6925, MAE_E=7.31 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:43:11.110 INFO: Epoch 98: loss=0.6934, MAE_E=7.34 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:43:24.682 INFO: Epoch 100: loss=0.6941, MAE_E=7.34 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:43:38.225 INFO: Epoch 102: loss=0.6948, MAE_E=7.33 meV, MAE_F=17.48 meV / A, lr_cur=0.00010
+2025-07-21 14:43:51.827 INFO: Epoch 104: loss=0.6949, MAE_E=7.52 meV, MAE_F=17.48 meV / A, lr_cur=0.00010
+2025-07-21 14:44:05.249 INFO: Epoch 106: loss=0.6942, MAE_E=7.46 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:44:18.825 INFO: Epoch 108: loss=0.6930, MAE_E=7.40 meV, MAE_F=17.46 meV / A, lr_cur=0.00010
+2025-07-21 14:44:32.331 INFO: Epoch 110: loss=0.6934, MAE_E=7.64 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:44:46.015 INFO: Epoch 112: loss=0.6936, MAE_E=7.82 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:44:59.528 INFO: Epoch 114: loss=0.6938, MAE_E=7.34 meV, MAE_F=17.47 meV / A, lr_cur=0.00010
+2025-07-21 14:45:13.061 INFO: Epoch 116: loss=0.6942, MAE_E=7.55 meV, MAE_F=17.48 meV / A, lr_cur=0.00010
+2025-07-21 14:45:26.590 INFO: Epoch 118: loss=0.6941, MAE_E=7.47 meV, MAE_F=17.48 meV / A, lr_cur=0.00010
+2025-07-21 14:45:40.071 INFO: Epoch 120: loss=0.6946, MAE_E=7.37 meV, MAE_F=17.48 meV / A, lr_cur=0.00010
+2025-07-21 14:45:53.611 INFO: Epoch 122: loss=0.6950, MAE_E=7.53 meV, MAE_F=17.48 meV / A, lr_cur=0.00010
+2025-07-21 14:46:07.149 INFO: Epoch 124: loss=0.6953, MAE_E=7.39 meV, MAE_F=17.49 meV / A, lr_cur=0.00010
+2025-07-21 14:46:20.681 INFO: Epoch 126: loss=0.6950, MAE_E=7.30 meV, MAE_F=17.49 meV / A, lr_cur=0.00010
+2025-07-21 14:46:34.244 INFO: Epoch 128: loss=0.6953, MAE_E=7.27 meV, MAE_F=17.49 meV / A, lr_cur=0.00010
+2025-07-21 14:46:47.811 INFO: Epoch 130: loss=0.6952, MAE_E=7.30 meV, MAE_F=17.49 meV / A, lr_cur=0.00010
+2025-07-21 14:47:01.318 INFO: Epoch 132: loss=0.6956, MAE_E=7.26 meV, MAE_F=17.49 meV / A, lr_cur=0.00010
+2025-07-21 14:47:14.814 INFO: Epoch 134: loss=0.6959, MAE_E=7.37 meV, MAE_F=17.50 meV / A, lr_cur=0.00010
+2025-07-21 14:47:28.391 INFO: Epoch 136: loss=0.6964, MAE_E=7.27 meV, MAE_F=17.50 meV / A, lr_cur=0.00010
+2025-07-21 14:47:42.096 INFO: Epoch 138: loss=0.6958, MAE_E=7.73 meV, MAE_F=17.50 meV / A, lr_cur=0.00010
+2025-07-21 14:47:55.677 INFO: Epoch 140: loss=0.6950, MAE_E=7.47 meV, MAE_F=17.49 meV / A, lr_cur=0.00010
+2025-07-21 14:48:09.326 INFO: Epoch 142: loss=0.6952, MAE_E=7.52 meV, MAE_F=17.49 meV / A, lr_cur=0.00010
+2025-07-21 14:48:22.848 INFO: Epoch 144: loss=0.6961, MAE_E=7.57 meV, MAE_F=17.50 meV / A, lr_cur=0.00010
+2025-07-21 14:48:36.489 INFO: Epoch 146: loss=0.6957, MAE_E=7.91 meV, MAE_F=17.50 meV / A, lr_cur=0.00010
+2025-07-21 14:48:50.002 INFO: Epoch 148: loss=0.6966, MAE_E=7.31 meV, MAE_F=17.51 meV / A, lr_cur=0.00010
+2025-07-21 14:49:03.786 INFO: Epoch 150: loss=0.6965, MAE_E=7.41 meV, MAE_F=17.50 meV / A, lr_cur=0.00010
+2025-07-21 14:49:17.415 INFO: Epoch 152: loss=0.6964, MAE_E=7.37 meV, MAE_F=17.51 meV / A, lr_cur=0.00010
+2025-07-21 14:49:31.155 INFO: Epoch 154: loss=0.6965, MAE_E=7.32 meV, MAE_F=17.51 meV / A, lr_cur=0.00010
+2025-07-21 14:49:44.890 INFO: Epoch 156: loss=0.6968, MAE_E=7.35 meV, MAE_F=17.51 meV / A, lr_cur=0.00010
+2025-07-21 14:49:58.481 INFO: Epoch 158: loss=0.6968, MAE_E=7.27 meV, MAE_F=17.51 meV / A, lr_cur=0.00010
+2025-07-21 14:50:12.221 INFO: Epoch 160: loss=0.6962, MAE_E=7.40 meV, MAE_F=17.50 meV / A, lr_cur=0.00010
+2025-07-21 14:50:25.834 INFO: Epoch 162: loss=0.6963, MAE_E=7.28 meV, MAE_F=17.50 meV / A, lr_cur=0.00010
+2025-07-21 14:50:39.475 INFO: Epoch 164: loss=0.6959, MAE_E=7.23 meV, MAE_F=17.50 meV / A, lr_cur=0.00010
+2025-07-21 14:50:53.040 INFO: Epoch 166: loss=0.6961, MAE_E=7.28 meV, MAE_F=17.50 meV / A, lr_cur=0.00010
+2025-07-21 14:51:06.678 INFO: Epoch 168: loss=0.6966, MAE_E=7.23 meV, MAE_F=17.51 meV / A, lr_cur=0.00010
+2025-07-21 14:51:20.200 INFO: Epoch 170: loss=0.6964, MAE_E=7.25 meV, MAE_F=17.51 meV / A, lr_cur=0.00010
+2025-07-21 14:51:33.761 INFO: Epoch 172: loss=0.6963, MAE_E=7.46 meV, MAE_F=17.51 meV / A, lr_cur=0.00010
+2025-07-21 14:51:47.360 INFO: Epoch 174: loss=0.6963, MAE_E=7.34 meV, MAE_F=17.51 meV / A, lr_cur=0.00010
+2025-07-21 14:52:00.920 INFO: Epoch 176: loss=0.6965, MAE_E=7.31 meV, MAE_F=17.51 meV / A, lr_cur=0.00010
+2025-07-21 14:52:14.392 INFO: Epoch 178: loss=0.6966, MAE_E=7.55 meV, MAE_F=17.51 meV / A, lr_cur=0.00010
+2025-07-21 14:52:28.155 INFO: Epoch 180: loss=0.6966, MAE_E=7.52 meV, MAE_F=17.51 meV / A, lr_cur=0.00010
+2025-07-21 14:52:41.884 INFO: Epoch 182: loss=0.6964, MAE_E=7.37 meV, MAE_F=17.51 meV / A, lr_cur=0.00010
+2025-07-21 14:52:55.513 INFO: Epoch 184: loss=0.6965, MAE_E=7.72 meV, MAE_F=17.51 meV / A, lr_cur=0.00010
+2025-07-21 14:53:09.022 INFO: Epoch 186: loss=0.6967, MAE_E=7.46 meV, MAE_F=17.51 meV / A, lr_cur=0.00010
+2025-07-21 14:53:22.563 INFO: Epoch 188: loss=0.6971, MAE_E=7.30 meV, MAE_F=17.52 meV / A, lr_cur=0.00010
+2025-07-21 14:53:36.162 INFO: Epoch 190: loss=0.6974, MAE_E=7.35 meV, MAE_F=17.52 meV / A, lr_cur=0.00010
+2025-07-21 14:53:49.747 INFO: Epoch 192: loss=0.6978, MAE_E=7.25 meV, MAE_F=17.52 meV / A, lr_cur=0.00010
+2025-07-21 14:54:03.184 INFO: Epoch 194: loss=0.6976, MAE_E=7.41 meV, MAE_F=17.52 meV / A, lr_cur=0.00010
+2025-07-21 14:54:16.612 INFO: Epoch 196: loss=0.6968, MAE_E=7.32 meV, MAE_F=17.52 meV / A, lr_cur=0.00010
+2025-07-21 14:54:30.249 INFO: Epoch 198: loss=0.6969, MAE_E=7.45 meV, MAE_F=17.52 meV / A, lr_cur=0.00010
+2025-07-21 14:54:32.859 INFO: Computing metrics for training, validation, and test sets
+2025-07-21 14:54:33.222 INFO: Loaded model from epoch 199
+2025-07-21 14:56:49.112 INFO: 
++-------------+-------------+-----------------+
+| config_type | MAE E / meV | MAE F / meV / A |
++-------------+-------------+-----------------+
+|    Train    |     4.45    |       3.93      |
+|  Validation |     7.65    |      17.51      |
+|     Test    |     7.91    |      17.70      |
++-------------+-------------+-----------------+
